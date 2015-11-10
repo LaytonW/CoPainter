@@ -18,7 +18,7 @@ public class GUI {
 	
 	private void connectFrame() {
 		connectFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		connectFrame.setVisible(true);
+		
 		connectFrame.setSize(312, 165);
 		connectFrame.setTitle("Connect to CoPainter");
 		connectFrame.getContentPane().setBackground(Color.WHITE);
@@ -50,6 +50,7 @@ public class GUI {
 		portText.setLocation(60,50);
 		hostButton.setLocation(5,80);
 		guestButton.setLocation(150, 80);
+		connectFrame.setVisible(true);
 		class GuestListener implements ActionListener {
 
 			@Override
@@ -108,11 +109,10 @@ public class GUI {
 	public void paintFrame() {
 		JFrame paintFrame=new JFrame();
 		paintFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		paintFrame.setVisible(true);
-		//paintFrame.getContentPane().setBackground(Color.WHITE);
 		paintFrame.setSize(700, 700);
 		paintFrame.setTitle("Collaborative Painter");
 		paintFrame.setResizable(false);
+		paintFrame.setLayout(null);
 		JMenuBar menuBar=new JMenuBar();
 		JMenu menu=new JMenu("Control");
 		JMenuItem clear=new JMenuItem("Clear");
@@ -121,21 +121,23 @@ public class GUI {
 		JMenuItem exit=new JMenuItem("Exit");
 		ControlPanel controlPanel=new ControlPanel();
 		JPanel board=new JPanel();
-		paintFrame.getContentPane().add(menuBar);
-		paintFrame.getContentPane().add(board);
-		controlPanel.setMaximumSize(new Dimension(700,100));
-		paintFrame.getContentPane().add(controlPanel);
-		menuBar.setSize(700, 25);
 		menu.add(clear);
 		menu.add(save);
 		menu.add(load);
 		menu.add(exit);
 		menuBar.add(menu);
+		paintFrame.getContentPane().add(menuBar);
+		menuBar.setLocation(0, 0);
+		paintFrame.getContentPane().add(board);
+		controlPanel.setMaximumSize(new Dimension(700,100));
+		paintFrame.getContentPane().add(controlPanel);
+		menuBar.setSize(700, 25);
 		board.setSize(700,630);
 		board.setBackground(Color.WHITE);
-		controlPanel.setSize(700,100);
+		controlPanel.setSize(700,45);
+		controlPanel.setLocation(0, 630);
 		controlPanel.setMaximumSize(new Dimension(700,100));
-		controlPanel.setBackground(Color.BLACK);
+		paintFrame.setVisible(true);
 	}
 	public void connectAsGuest() {
 		//Add here as a host
