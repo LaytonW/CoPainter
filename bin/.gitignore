@@ -1,2 +1,10 @@
 /CoPainter.class
 /Path.class
+/GUI.class
+/GUI$1GuestListener.class
+/GUI$1HostListener.class
+/PaintBoard.class
+/ControlPanel.class
+/Pen.class
+/colors.class
+/Point.class
