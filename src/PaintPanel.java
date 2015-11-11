@@ -1,11 +1,14 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -21,13 +24,16 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 		this.addMouseListener(this);
 	}
 	public void paintComponent(Graphics g) {
+		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+		this.setCursor(blankCursor);
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		System.out.println("Check!!!");
 		for (Path path:paths) {
 			g.setColor(path.color);
 			if (path.points.size()==1) {
-				g.drawOval(path.points.get(0).x,path.points.get(0).y ,path.radius,path.radius);
+				g.fillOval(path.points.get(0).x-path.radius,path.points.get(0).y-path.radius,path.radius*2,path.radius*2);
 				System.out.println("Check!");
 			}
 			else {
@@ -70,11 +76,11 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		paths.add(new Path(ControlPanel.current.getColor(),ControlPanel.current.radius));
-		paths.get(paths.size()-1).points.clear();
-		paths.get(paths.size()-1).points.add(getMousePosition());
-		repaint();
-		PaintFrame.menuBar.repaint();
+		//paths.add(new Path(ControlPanel.current.getColor(),ControlPanel.current.radius));
+		//paths.get(paths.size()-1).points.clear();
+		//paths.get(paths.size()-1).points.add(getMousePosition());
+		//repaint();
+		//PaintFrame.menuBar.repaint();
 	}
 
 	@Override

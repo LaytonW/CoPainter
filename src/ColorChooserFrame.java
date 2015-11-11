@@ -10,6 +10,7 @@ public class ColorChooserFrame extends JFrame{
 	ColorChooserFrame() {
 		this.setSize(650,440);
 		this.setLayout(null);
+		this.setLocationRelativeTo(null);
 		this.setTitle("Color Chooser");
 		JColorChooser colorChooser=new JColorChooser();
 		JButton confirm=new JButton("Confirm");
