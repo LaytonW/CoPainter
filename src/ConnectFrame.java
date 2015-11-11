@@ -21,8 +21,8 @@ public class ConnectFrame extends JFrame {
 		this.setResizable(false);
 		JLabel hostLabel = new JLabel("Host:");
 		JLabel portLabel = new JLabel("Port: ");
-		JTextField hostText = new JTextField();
-		JTextField portText = new JTextField();
+		JTextField hostText = new JTextField("localhost");
+		JTextField portText = new JTextField("2333");
 		JButton hostButton = new JButton("Start as a host");
 		JButton guestButton = new JButton("Connect to a host");
 		this.getContentPane().add(hostLabel);
@@ -39,6 +39,7 @@ public class ConnectFrame extends JFrame {
 		portText.setBounds(60, 50,230,25);
 		hostButton.setBounds(5, 80,140,40);
 		guestButton.setBounds(150, 80,140,40);
+		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		class GuestListener implements ActionListener {
 
