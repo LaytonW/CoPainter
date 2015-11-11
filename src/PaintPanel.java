@@ -33,7 +33,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 		for (Path path:paths) {
 			g.setColor(path.color);
 			if (path.points.size()==1) {
-				g.drawOval(path.points.get(0).x,path.points.get(0).y ,path.radius,path.radius);
+				g.fillOval(path.points.get(0).x-path.radius,path.points.get(0).y-path.radius,path.radius*2,path.radius*2);
 				System.out.println("Check!");
 			}
 			else {
