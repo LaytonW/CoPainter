@@ -15,7 +15,7 @@ public class ControlPanel extends JPanel {
 	/**
 	 * 
 	 */
-	public static Point current;
+	public static PenPoint current;
 	private static final long serialVersionUID = 1L;
 
 	ControlPanel() {
@@ -30,7 +30,7 @@ public class ControlPanel extends JPanel {
 		JTextField radiusText = new JTextField();
 		JButton radiusButton = new JButton("Set");
 		JButton colorButton = new JButton("Custom");
-		current = new Point();
+		current = new PenPoint();
 		current.setPointColor(0, 0, 0);
 		current.setRadius(20);
 		this.add(colorButton);
@@ -40,7 +40,7 @@ public class ControlPanel extends JPanel {
 		this.setSize(700, 45);
 		radiusText.setFont(new Font(null, Font.PLAIN, 40));
 		for (int i = 0; i < 4; i++) {
-			radiusOption[i] = new RadiusOption(5 * (i + 1));
+			radiusOption[i] = new RadiusOption(4 * (i + 1));
 			this.add(radiusOption[i]);
 			radiusOption[i].setBounds(300 + 45 * i, 0, 45, 45);
 		}
@@ -55,7 +55,11 @@ public class ControlPanel extends JPanel {
 
 		colorButton.setBounds(180, 0, 90, 45);
 		current.setBounds(0, 0, 700, 700);
-		colorButton.addActionListener(new ColorCustomListener());
+		colorButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new ColorChooserFrame();
+			}
+		});
 		class RadiusCustomListener implements ActionListener {
 
 			@Override

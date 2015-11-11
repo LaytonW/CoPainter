@@ -16,7 +16,7 @@ public class RadiusOption extends JButton implements ActionListener {
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, 45, 45);
 		g.setColor(Color.BLACK);
-		g.fillOval(32 - radius, 32 - radius, radius, radius);
+		g.fillOval(32-radius*2, 32-radius*2, radius*2, radius*2);
 		this.addActionListener(this);
 	}
 
