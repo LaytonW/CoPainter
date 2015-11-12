@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-public class PaintPanel extends JPanel implements MouseMotionListener,MouseListener{
+public class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 	
 	private static final long serialVersionUID = 1L;
 	public PenPoint mousePoint;
@@ -32,13 +32,10 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 		this.setCursor(blankCursor);
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		System.out.println("Check!!!");
 		for (Path path:paths) {
 			g.setColor(path.color);
-			if (path.points.size()==1) {
+			if (path.points.size()==1)
 				g.fillOval(path.points.get(0).x-path.radius,path.points.get(0).y-path.radius,path.radius*2,path.radius*2);
-				System.out.println("Check!");
-			}
 			else {
 				if(g instanceof Graphics2D) {
 					Graphics2D g2D=(Graphics2D) g;
@@ -52,7 +49,6 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 					prevPoint=p;
 				}
 			}
-
 		}
 	}
 	@Override
@@ -114,6 +110,5 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 }
