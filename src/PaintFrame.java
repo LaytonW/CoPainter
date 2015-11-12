@@ -1,5 +1,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -14,7 +16,7 @@ public class PaintFrame extends JFrame {
 	public static PaintPanel paintPanel;
 	public static JMenuBar menuBar;
 	PaintFrame() {
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setSize(800, 700);
 		this.setTitle("Collaborative Painter");
 		this.setResizable(false);
@@ -26,6 +28,16 @@ public class PaintFrame extends JFrame {
 		JMenuItem save = new JMenuItem("Save");
 		JMenuItem load = new JMenuItem("Load");
 		JMenuItem exit = new JMenuItem("Exit");
+		clear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				paintPanel.clear();
+			}
+		});
+		exit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		ControlPanel controlPanel = new ControlPanel();
 		paintPanel = new PaintPanel();
 		menu.add(clear);

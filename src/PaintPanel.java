@@ -23,6 +23,9 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 		this.addMouseMotionListener(this);
 		this.addMouseListener(this);
 	}
+	public void clear() {
+		paths = new ArrayList<Path>();
+	}
 	public void paintComponent(Graphics g) {
 		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
@@ -57,8 +60,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 		// TODO Auto-generated method stub
 		paths.get(paths.size()-1).points.add(e.getPoint());
 		repaint();
-		PaintFrame.menuBar.repaint();
-		
+		//PaintFrame.menuBar.repaint();
 	}
 
 	@Override
@@ -87,7 +89,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		repaint();
-		PaintFrame.menuBar.repaint();
+		//PaintFrame.menuBar.repaint();
 		
 	}
 
@@ -96,7 +98,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 		// TODO Auto-generated method stub
 		this.remove(mousePoint);
 		this.repaint();
-		PaintFrame.menuBar.repaint();
+		//PaintFrame.menuBar.repaint();
 	}
 
 	@Override
@@ -106,7 +108,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 		paths.get(paths.size()-1).points.clear();
 		paths.get(paths.size()-1).points.add(getMousePosition());
 		repaint();
-		PaintFrame.menuBar.repaint();
+		//PaintFrame.menuBar.repaint();
 	}
 
 	@Override
