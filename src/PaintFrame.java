@@ -2,11 +2,19 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.SpringLayout;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class PaintFrame extends JFrame {
 	/**
@@ -36,6 +44,38 @@ public class PaintFrame extends JFrame {
 		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
+			}
+		});
+		save.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileSaver = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(
+						".pb Painting Board File", "pb");
+				fileSaver.setFileFilter(filter);
+				fileSaver.setSelectedFile(new File("Untitled.pb"));
+				boolean done = false;
+				do {
+					if (fileSaver.showSaveDialog(rootPane) == JFileChooser.APPROVE_OPTION) {
+						try {
+							File saveFile = fileSaver.getSelectedFile();
+							if (saveFile.exists()) {
+								if (JOptionPane.showConfirmDialog(rootPane, "File "
+										+ saveFile.getName() + " already exists.\n"
+										+ "Do you want to overwrite it?", "Overwrite?",
+										JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
+									continue;
+							}
+							FileOutputStream saverFileStream = new FileOutputStream(fileSaver.getSelectedFile());
+							ObjectOutputStream saverObjectStream = new ObjectOutputStream(saverFileStream);
+							saverObjectStream.writeObject(paintPanel.paths);
+							saverObjectStream.writeObject(paintPanel.mousePoint);
+							saverObjectStream.close();
+							done = true;
+						} catch (Exception fe) {
+							JOptionPane.showMessageDialog(rootPane, fe.toString());
+						}
+					}
+				} while (!done);
 			}
 		});
 		ControlPanel controlPanel = new ControlPanel();
