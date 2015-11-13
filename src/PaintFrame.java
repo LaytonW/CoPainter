@@ -61,6 +61,7 @@ public class PaintFrame extends JFrame {
 		clear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				paintPanel.clear();
+				paintPanel.updateNetwork();
 			}
 		});
 		exit.addActionListener(new ActionListener() {
