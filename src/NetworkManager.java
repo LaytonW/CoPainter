@@ -1,4 +1,4 @@
 
-public class NetworkManager {
-
+public interface NetworkManager extends Runnable {
+	void write(Object obj);
 }

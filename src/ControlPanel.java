@@ -58,6 +58,7 @@ public class ControlPanel extends JPanel {
 			public void paintComponent(Graphics g) {
 				g.setColor(new Color(R, G, B));
 				g.fillRect(0, 0, 45, 45);
+				radiusText.setText(String.valueOf(current.getRadius()));
 				this.addActionListener(this);
 			}
 
