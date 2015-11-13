@@ -13,15 +13,17 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-public class PaintPanel extends JPanel implements MouseMotionListener,MouseListener{
+public class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 	
 	private static final long serialVersionUID = 1L;
-	public PenPoint mousePoint;
-	public ArrayList<Path> paths;
+	public static ArrayList<Path> paths;
 	PaintPanel () {
 		paths=new ArrayList<Path>();
 		this.addMouseMotionListener(this);
 		this.addMouseListener(this);
+	}
+	public void clear() {
+		paths = new ArrayList<Path>();
 	}
 	public void paintComponent(Graphics g) {
 		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
@@ -29,13 +31,14 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 		this.setCursor(blankCursor);
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		System.out.println("Check!!!");
 		for (Path path:paths) {
 			g.setColor(path.color);
-			if (path.points.size()==1) {
+			if (path.points.size()==1)
 				g.fillOval(path.points.get(0).x-path.radius,path.points.get(0).y-path.radius,path.radius*2,path.radius*2);
-				System.out.println("Check!");
+<<<<<<< HEAD
 			}
+=======
+>>>>>>> refs/remotes/origin/Layton
 			else {
 				if(g instanceof Graphics2D) {
 					Graphics2D g2D=(Graphics2D) g;
@@ -49,7 +52,6 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 					prevPoint=p;
 				}
 			}
-
 		}
 	}
 	@Override
@@ -57,61 +59,73 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 		// TODO Auto-generated method stub
 		paths.get(paths.size()-1).points.add(e.getPoint());
 		repaint();
-		PaintFrame.menuBar.repaint();
-		
+<<<<<<< HEAD
+=======
+		//PaintFrame.menuBar.repaint();
+>>>>>>> refs/remotes/origin/Layton
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
-		mousePoint=ControlPanel.current;
-		mousePoint.setSize(mousePoint.radius*2, mousePoint.radius*2);
-		this.add(mousePoint);
 		try {
-			mousePoint.setLocation(e.getX()-mousePoint.radius,e.getY()-mousePoint.radius);
+			ControlPanel.current.setLocation(e.getX()-ControlPanel.current.getRadius(),e.getY()-ControlPanel.current.getRadius());
 		} catch (Exception ex) {
 		}
+		repaint();
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		//paths.add(new Path(ControlPanel.current.getColor(),ControlPanel.current.radius));
-		//paths.get(paths.size()-1).points.clear();
-		//paths.get(paths.size()-1).points.add(getMousePosition());
-		//repaint();
-		//PaintFrame.menuBar.repaint();
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
+		ControlPanel.current.setSize(ControlPanel.current.getRadius()*2, ControlPanel.current.getRadius()*2);
+		this.add(ControlPanel.current);
+		try {
+			ControlPanel.current.setLocation(arg0.getX()-ControlPanel.current.getRadius(),arg0.getY()-ControlPanel.current.getRadius());
+		} catch (Exception ex) {
+		}
 		repaint();
-		PaintFrame.menuBar.repaint();
+<<<<<<< HEAD
+=======
+		//PaintFrame.menuBar.repaint();
 		
+>>>>>>> refs/remotes/origin/Layton
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
+<<<<<<< HEAD
+		remove(ControlPanel.current);
+		repaint();
+=======
 		this.remove(mousePoint);
 		this.repaint();
-		PaintFrame.menuBar.repaint();
+		//PaintFrame.menuBar.repaint();
+>>>>>>> refs/remotes/origin/Layton
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		paths.add(new Path(ControlPanel.current.getColor(),ControlPanel.current.radius));
+		paths.add(new Path(ControlPanel.current.getColor(),ControlPanel.current.getRadius()));
 		paths.get(paths.size()-1).points.clear();
 		paths.get(paths.size()-1).points.add(getMousePosition());
 		repaint();
-		PaintFrame.menuBar.repaint();
+<<<<<<< HEAD
+=======
+		//PaintFrame.menuBar.repaint();
+>>>>>>> refs/remotes/origin/Layton
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 }
