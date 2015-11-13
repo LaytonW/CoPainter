@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -14,7 +15,8 @@ public class ClientManager implements NetworkManager {
 	private ObjectOutputStream writer;
 	
 	ClientManager(InetAddress host, int p) throws IOException {
-		s = new Socket(host, p);
+		s = new Socket();
+		s.connect(new InetSocketAddress(host, p), 5000);
 		reader = new ObjectInputStream(s.getInputStream());
 		writer = new ObjectOutputStream(s.getOutputStream());
 	}
