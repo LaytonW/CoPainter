@@ -17,7 +17,10 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	
 	private static final long serialVersionUID = 1L;
 	public static ArrayList<Path> paths;
-	PaintPanel () {
+	private NetworkManager networkManager;
+	PaintPanel (NetworkManager n) {
+		networkManager = n;
+		new Thread(networkManager).start();
 		paths=new ArrayList<Path>();
 		this.addMouseMotionListener(this);
 		this.addMouseListener(this);
@@ -25,6 +28,11 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	public void clear() {
 		paths = new ArrayList<Path>();
 	}
+	
+	public void updateNetwork() {
+		networkManager.write(new ArrayList<Path>(paths));
+	}
+	
 	public void paintComponent(Graphics g) {
 		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
@@ -70,7 +78,6 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -104,5 +111,6 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
+		updateNetwork();
 	}
 }
