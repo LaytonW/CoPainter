@@ -17,10 +17,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SpringLayout;
 import javax.swing.filechooser.FileNameExtensionFilter;
-<<<<<<< HEAD
-=======
 
->>>>>>> refs/remotes/origin/Layton
 public class PaintFrame extends JFrame {
 	/**
 	 * 
@@ -28,14 +25,10 @@ public class PaintFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	public static PaintPanel paintPanel;
 	public static JMenuBar menuBar;
-<<<<<<< HEAD
 	public static String mode;
 	PaintFrame(String m) {
 		mode=m;
-=======
-	PaintFrame() {
->>>>>>> refs/remotes/origin/Layton
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(800, 700);
 		this.setTitle("Collaborative Painter");
 		this.setResizable(false);
@@ -66,10 +59,6 @@ public class PaintFrame extends JFrame {
 		mainLayout.putConstraint(SpringLayout.WEST, paintPanel, 0, SpringLayout.WEST, this);
 		mainLayout.putConstraint(SpringLayout.NORTH, controlPanel, 0, SpringLayout.SOUTH, paintPanel);
 		mainLayout.putConstraint(SpringLayout.WEST, controlPanel, 0, SpringLayout.WEST, this);
-<<<<<<< HEAD
-=======
-		//this.pack();
->>>>>>> refs/remotes/origin/Layton
 		clear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				paintPanel.clear();

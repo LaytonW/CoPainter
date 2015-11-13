@@ -38,13 +38,8 @@ public class ConnectFrame extends JFrame {
 		portLabel.setBounds(5, 50,50,25);
 		hostText.setBounds(60, 10,230,25);
 		portText.setBounds(60, 50,230,25);
-<<<<<<< HEAD
 		serverButton.setBounds(5, 80,140,40);
 		clientButton.setBounds(150, 80,160,40);
-=======
-		hostButton.setBounds(5, 80,140,40);
-		guestButton.setBounds(150, 80,160,40);
->>>>>>> refs/remotes/origin/Layton
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		class ClientListener implements ActionListener {
@@ -55,43 +50,14 @@ public class ConnectFrame extends JFrame {
 				try {
 					host = hostText.getText();
 					port = portText.getText();
-<<<<<<< HEAD
-					int index0 = host.indexOf(".");
-					int index1 = host.indexOf(".", index0 + 1);
-					int index2 = host.indexOf(".", index1 + 1);
-					int ip0 = Integer.parseInt(host.substring(0, index0));
-					int ip1 = Integer.parseInt(host.substring(index0 + 1, index1));
-					int ip2 = Integer.parseInt(host.substring(index1 + 1, index2));
-					int ip3 = Integer.parseInt(host.substring(index2 + 1));
-					if (Integer.parseInt(port) >=0 && Integer.parseInt(port) <= 65535 && ip0 >= 0 && ip0 <= 255
-							&& ip1 >= 0 && ip1 <= 255 && ip2 >= 0 && ip2 <= 255 && ip3 >= 0 && ip3 <= 255) {
-							;
-					} else if (!(Integer.parseInt(port) >=0 && Integer.parseInt(port) <= 65535)) {
-						JOptionPane.showMessageDialog(null, "Invalid Port");
-						return;
-					}
-						
-					else if (!(ip0 <= 255 && ip1 >= 0 && ip1 <= 255 && ip2 >= 0 && ip2 <= 255 && ip3 >= 0
-							&& ip3 <= 255)) {
-						JOptionPane.showMessageDialog(null, "Invalid Host");
-						return;
-					}
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Invalid Input");
-=======
 					////
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Invalid Host");
->>>>>>> refs/remotes/origin/Layton
 					return;
 				}
 				setVisible(false);
 				dispose();
-<<<<<<< HEAD
-				PaintFrame paintFrame = new PaintFrame("Client");
-=======
-				new PaintFrame();
->>>>>>> refs/remotes/origin/Layton
+				new PaintFrame("Client");
 			}
 		}
 		class ServerListener implements ActionListener {
@@ -100,22 +66,6 @@ public class ConnectFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				try {
-<<<<<<< HEAD
-					port = portText.getText();
-					if (Integer.parseInt(port) >=0 && Integer.parseInt(port) <= 65535) {
-						;
-					} else {
-						JOptionPane.showMessageDialog(null, "Invalid Port");
-						return;
-					}
-						
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Invalid Port");
-				}
-				setVisible(false);
-				dispose();
-				PaintFrame paintFrame = new PaintFrame("Server");
-=======
 					String port = portText.getText();
 					if (Integer.parseInt(port) > 1023 && Integer.parseInt(port) <= 65535)
 						;////
@@ -129,8 +79,7 @@ public class ConnectFrame extends JFrame {
 				}
 				setVisible(false);
 				dispose();
-				new PaintFrame();
->>>>>>> refs/remotes/origin/Layton
+				new PaintFrame("Server");
 			}
 		}
 		clientButton.addActionListener(new ClientListener());
