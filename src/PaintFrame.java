@@ -90,7 +90,7 @@ public class PaintFrame extends JFrame {
 							}
 							FileOutputStream saverFileStream = new FileOutputStream(saveFile);
 							ObjectOutputStream saverObjectStream = new ObjectOutputStream(saverFileStream);
-							saverObjectStream.writeObject(paintPanel.paths);
+							saverObjectStream.writeObject(PaintPanel.paths);
 							saverObjectStream.writeObject(ControlPanel.current);
 							saverObjectStream.close();
 							done = true;
@@ -131,7 +131,7 @@ public class PaintFrame extends JFrame {
 										"File broken", JOptionPane.ERROR_MESSAGE);
 								break;
 							}
-							paintPanel.paths = (ArrayList<Path>) obj1;
+							PaintPanel.paths = (ArrayList<Path>) obj1;
 							ControlPanel.current = (PenPoint) obj2;
 							//paintPanel.revalidate();
 							done = true;
