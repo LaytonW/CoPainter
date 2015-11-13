@@ -25,9 +25,8 @@ public class PaintFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	public static PaintPanel paintPanel;
 	public static JMenuBar menuBar;
-	public static String mode;
-	PaintFrame(String m) {
-		mode=m;
+	
+	PaintFrame(NetworkManager n) {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(800, 700);
 		this.setTitle("Collaborative Painter");
@@ -41,8 +40,8 @@ public class PaintFrame extends JFrame {
 		JMenuItem load = new JMenuItem("Load");
 		JMenuItem exit = new JMenuItem("Exit");
 		ControlPanel controlPanel = new ControlPanel();
-		paintPanel = new PaintPanel();
-		if (mode=="Server") {
+		paintPanel = new PaintPanel(n);
+		if (n instanceof ServerManager) {
 			menu.add(clear);
 			menu.add(load);
 		}
@@ -132,8 +131,8 @@ public class PaintFrame extends JFrame {
 								break;
 							}
 							PaintPanel.paths = (ArrayList<Path>) obj1;
+							paintPanel.updateNetwork();
 							ControlPanel.current = (PenPoint) obj2;
-							//paintPanel.revalidate();
 							done = true;
 						} catch (java.io.StreamCorruptedException streamEx) {
 							JOptionPane.showMessageDialog(rootPane, "Resolving file failed!\n"

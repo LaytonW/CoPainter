@@ -46,40 +46,45 @@ public class ConnectFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
+				ClientManager clientManager;
 				try {
 					host = hostText.getText();
 					port = portText.getText();
-					////
+					clientManager = new ClientManager(InetAddress.getByName(host), Integer.parseInt(port));
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Invalid Host");
+					JOptionPane.showMessageDialog(rootPane, "Unable to connect to host!",
+							"Fail to start", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				setVisible(false);
 				dispose();
-				new PaintFrame("Client");
+				new PaintFrame(clientManager);
 			}
 		}
 		class ServerListener implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
+				int port;
 				try {
-					String port = portText.getText();
-					if (Integer.parseInt(port) > 1023 && Integer.parseInt(port) <= 65535)
-						;////
-					else {
-						JOptionPane.showMessageDialog(null, "Invalid Host");
-						return;
-					}
+					 port = Integer.parseInt(portText.getText());
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Invalid Host");
+					JOptionPane.showMessageDialog(rootPane, "Invalid input!",
+							"Invalid input", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				ServerManager serverManager;
+				try {
+					serverManager = new ServerManager(port);
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(rootPane, "Unable to listen to port "
+							+ String.valueOf(port) +"!",
+							"Fail to start", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				setVisible(false);
 				dispose();
-				new PaintFrame("Server");
+				new PaintFrame(serverManager);
 			}
 		}
 		clientButton.addActionListener(new ClientListener());
