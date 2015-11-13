@@ -13,7 +13,7 @@ public class ConnectFrame extends JFrame {
 	public String port;
 	ConnectFrame() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(312, 165);
+		this.setSize(315, 170);
 		this.setTitle("Connect to CoPainter");
 		this.getContentPane().setBackground(Color.WHITE);
 		this.getContentPane().setLayout(null);
@@ -37,7 +37,7 @@ public class ConnectFrame extends JFrame {
 		hostText.setBounds(60, 10,230,25);
 		portText.setBounds(60, 50,230,25);
 		serverButton.setBounds(5, 80,140,40);
-		clientButton.setBounds(150, 80,140,40);
+		clientButton.setBounds(150, 80,160,40);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		class ClientListener implements ActionListener {
@@ -57,18 +57,24 @@ public class ConnectFrame extends JFrame {
 					int ip3 = Integer.parseInt(host.substring(index2 + 1));
 					if (Integer.parseInt(port) >=0 && Integer.parseInt(port) <= 65535 && ip0 >= 0 && ip0 <= 255
 							&& ip1 >= 0 && ip1 <= 255 && ip2 >= 0 && ip2 <= 255 && ip3 >= 0 && ip3 <= 255) {
-						new Network(host, port).connectAsGuest();
-						setVisible(false);
-						dispose();
-						PaintFrame paintFrame = new PaintFrame("Client");
-					} else if (!(Integer.parseInt(port) >=0 && Integer.parseInt(port) <= 65535))
+							;
+					} else if (!(Integer.parseInt(port) >=0 && Integer.parseInt(port) <= 65535)) {
 						JOptionPane.showMessageDialog(null, "Invalid Port");
+						return;
+					}
+						
 					else if (!(ip0 <= 255 && ip1 >= 0 && ip1 <= 255 && ip2 >= 0 && ip2 <= 255 && ip3 >= 0
-							&& ip3 <= 255))
+							&& ip3 <= 255)) {
 						JOptionPane.showMessageDialog(null, "Invalid Host");
+						return;
+					}
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Invalid Input");
+					return;
 				}
+				setVisible(false);
+				dispose();
+				PaintFrame paintFrame = new PaintFrame("Client");
 			}
 		}
 		class ServerListener implements ActionListener {
@@ -80,15 +86,18 @@ public class ConnectFrame extends JFrame {
 				try {
 					port = portText.getText();
 					if (Integer.parseInt(port) >=0 && Integer.parseInt(port) <= 65535) {
-						new Network(host, port).connectAsHost();
-						setVisible(false);
-						dispose();
-						PaintFrame paintFrame = new PaintFrame("Server");
-					} else
+						;
+					} else {
 						JOptionPane.showMessageDialog(null, "Invalid Port");
+						return;
+					}
+						
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Invalid Port");
 				}
+				setVisible(false);
+				dispose();
+				PaintFrame paintFrame = new PaintFrame("Server");
 			}
 		}
 		clientButton.addActionListener(new ClientListener());

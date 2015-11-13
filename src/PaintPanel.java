@@ -22,6 +22,9 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 		this.addMouseMotionListener(this);
 		this.addMouseListener(this);
 	}
+	public void clear() {
+		paths = new ArrayList<Path>();
+	}
 	public void paintComponent(Graphics g) {
 		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
