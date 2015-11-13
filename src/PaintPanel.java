@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-public class PaintPanel extends JPanel implements MouseMotionListener,MouseListener{
+public class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 	
 	private static final long serialVersionUID = 1L;
 	public static ArrayList<Path> paths;
@@ -33,9 +33,12 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 		g.fillRect(0, 0, getWidth(), getHeight());
 		for (Path path:paths) {
 			g.setColor(path.color);
-			if (path.points.size()==1) {
+			if (path.points.size()==1)
 				g.fillOval(path.points.get(0).x-path.radius,path.points.get(0).y-path.radius,path.radius*2,path.radius*2);
+<<<<<<< HEAD
 			}
+=======
+>>>>>>> refs/remotes/origin/Layton
 			else {
 				if(g instanceof Graphics2D) {
 					Graphics2D g2D=(Graphics2D) g;
@@ -56,6 +59,10 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 		// TODO Auto-generated method stub
 		paths.get(paths.size()-1).points.add(e.getPoint());
 		repaint();
+<<<<<<< HEAD
+=======
+		//PaintFrame.menuBar.repaint();
+>>>>>>> refs/remotes/origin/Layton
 	}
 
 	@Override
@@ -84,13 +91,24 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 		} catch (Exception ex) {
 		}
 		repaint();
+<<<<<<< HEAD
+=======
+		//PaintFrame.menuBar.repaint();
+		
+>>>>>>> refs/remotes/origin/Layton
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
+<<<<<<< HEAD
 		remove(ControlPanel.current);
 		repaint();
+=======
+		this.remove(mousePoint);
+		this.repaint();
+		//PaintFrame.menuBar.repaint();
+>>>>>>> refs/remotes/origin/Layton
 	}
 
 	@Override
@@ -100,11 +118,14 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 		paths.get(paths.size()-1).points.clear();
 		paths.get(paths.size()-1).points.add(getMousePosition());
 		repaint();
+<<<<<<< HEAD
+=======
+		//PaintFrame.menuBar.repaint();
+>>>>>>> refs/remotes/origin/Layton
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 }
