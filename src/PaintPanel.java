@@ -16,8 +16,7 @@ import javax.swing.JPanel;
 public class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 	
 	private static final long serialVersionUID = 1L;
-	public PenPoint mousePoint;
-	public ArrayList<Path> paths;
+	public static ArrayList<Path> paths;
 	PaintPanel () {
 		paths=new ArrayList<Path>();
 		this.addMouseMotionListener(this);
@@ -56,55 +55,50 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 		// TODO Auto-generated method stub
 		paths.get(paths.size()-1).points.add(e.getPoint());
 		repaint();
-		//PaintFrame.menuBar.repaint();
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
-		mousePoint=ControlPanel.current;
-		mousePoint.setSize(mousePoint.radius*2, mousePoint.radius*2);
-		this.add(mousePoint);
 		try {
-			mousePoint.setLocation(e.getX()-mousePoint.radius,e.getY()-mousePoint.radius);
+			ControlPanel.current.setLocation(e.getX()-ControlPanel.current.getRadius(),e.getY()-ControlPanel.current.getRadius());
 		} catch (Exception ex) {
 		}
+		repaint();
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		//paths.add(new Path(ControlPanel.current.getColor(),ControlPanel.current.radius));
-		//paths.get(paths.size()-1).points.clear();
-		//paths.get(paths.size()-1).points.add(getMousePosition());
-		//repaint();
-		//PaintFrame.menuBar.repaint();
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
+		ControlPanel.current.setSize(ControlPanel.current.getRadius()*2, ControlPanel.current.getRadius()*2);
+		this.add(ControlPanel.current);
+		try {
+			ControlPanel.current.setLocation(arg0.getX()-ControlPanel.current.getRadius(),arg0.getY()-ControlPanel.current.getRadius());
+		} catch (Exception ex) {
+		}
 		repaint();
-		//PaintFrame.menuBar.repaint();
-		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		this.remove(mousePoint);
-		this.repaint();
-		//PaintFrame.menuBar.repaint();
+		remove(ControlPanel.current);
+		repaint();
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		paths.add(new Path(ControlPanel.current.getColor(),ControlPanel.current.radius));
+		paths.add(new Path(ControlPanel.current.getColor(),ControlPanel.current.getRadius()));
 		paths.get(paths.size()-1).points.clear();
 		paths.get(paths.size()-1).points.add(getMousePosition());
 		repaint();
-		//PaintFrame.menuBar.repaint();
 	}
 
 	@Override

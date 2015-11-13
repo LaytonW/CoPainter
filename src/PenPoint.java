@@ -7,7 +7,7 @@ public class PenPoint extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public int radius;
+	private int radius;
 	private Color color;
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.WHITE);
@@ -27,5 +27,8 @@ public class PenPoint extends JPanel {
 	}
 	public Color getColor() {
 		return color;
+	}
+	public int getRadius() {
+		return radius;
 	}
 }
