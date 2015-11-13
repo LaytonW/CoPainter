@@ -16,8 +16,8 @@ import javax.swing.JPanel;
 public class PaintPanel extends JPanel implements MouseMotionListener,MouseListener{
 	
 	private static final long serialVersionUID = 1L;
-	public PenPoint mousePoint;
-	public ArrayList<Path> paths;
+	public static PenPoint mousePoint;
+	public static ArrayList<Path> paths;
 	PaintPanel () {
 		paths=new ArrayList<Path>();
 		this.addMouseMotionListener(this);
@@ -29,12 +29,10 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 		this.setCursor(blankCursor);
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		System.out.println("Check!!!");
 		for (Path path:paths) {
 			g.setColor(path.color);
 			if (path.points.size()==1) {
 				g.fillOval(path.points.get(0).x-path.radius,path.points.get(0).y-path.radius,path.radius*2,path.radius*2);
-				System.out.println("Check!");
 			}
 			else {
 				if(g instanceof Graphics2D) {
@@ -76,27 +74,20 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		//paths.add(new Path(ControlPanel.current.getColor(),ControlPanel.current.radius));
-		//paths.get(paths.size()-1).points.clear();
-		//paths.get(paths.size()-1).points.add(getMousePosition());
-		//repaint();
-		//PaintFrame.menuBar.repaint();
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		repaint();
-		PaintFrame.menuBar.repaint();
-		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		this.remove(mousePoint);
-		this.repaint();
-		PaintFrame.menuBar.repaint();
+		remove(mousePoint);
+		repaint();
 	}
 
 	@Override
@@ -106,7 +97,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener,MouseListe
 		paths.get(paths.size()-1).points.clear();
 		paths.get(paths.size()-1).points.add(getMousePosition());
 		repaint();
-		PaintFrame.menuBar.repaint();
+		System.out.println(paths.size());
 	}
 
 	@Override

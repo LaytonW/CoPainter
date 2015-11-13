@@ -11,7 +11,6 @@ public class ConnectFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	public String host;
 	public String port;
-
 	ConnectFrame() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(312, 165);
@@ -56,13 +55,13 @@ public class ConnectFrame extends JFrame {
 					int ip1 = Integer.parseInt(host.substring(index0 + 1, index1));
 					int ip2 = Integer.parseInt(host.substring(index1 + 1, index2));
 					int ip3 = Integer.parseInt(host.substring(index2 + 1));
-					if (Integer.parseInt(port) > 1023 && Integer.parseInt(port) <= 65535 && ip0 >= 0 && ip0 <= 255
+					if (Integer.parseInt(port) >=0 && Integer.parseInt(port) <= 65535 && ip0 >= 0 && ip0 <= 255
 							&& ip1 >= 0 && ip1 <= 255 && ip2 >= 0 && ip2 <= 255 && ip3 >= 0 && ip3 <= 255) {
 						new Network(host, port).connectAsGuest();
 						setVisible(false);
 						dispose();
-						PaintFrame paintFrame = new PaintFrame();
-					} else if (!(Integer.parseInt(port) > 1023 && Integer.parseInt(port) <= 65535))
+						PaintFrame paintFrame = new PaintFrame("Client");
+					} else if (!(Integer.parseInt(port) >=0 && Integer.parseInt(port) <= 65535))
 						JOptionPane.showMessageDialog(null, "Invalid Port");
 					else if (!(ip0 <= 255 && ip1 >= 0 && ip1 <= 255 && ip2 >= 0 && ip2 <= 255 && ip3 >= 0
 							&& ip3 <= 255))
@@ -80,15 +79,15 @@ public class ConnectFrame extends JFrame {
 				hostText.setText("localhost");
 				try {
 					String port = portText.getText();
-					if (Integer.parseInt(port) > 1023 && Integer.parseInt(port) <= 65535) {
+					if (Integer.parseInt(port) >=0 && Integer.parseInt(port) <= 65535) {
 						new Network(host, port).connectAsHost();
 						setVisible(false);
 						dispose();
-						PaintFrame paintFrame = new PaintFrame();
+						PaintFrame paintFrame = new PaintFrame("Server");
 					} else
-						JOptionPane.showMessageDialog(null, "Invalid Host");
+						JOptionPane.showMessageDialog(null, "Invalid Port");
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Invalid Host");
+					JOptionPane.showMessageDialog(null, "Invalid Port");
 				}
 			}
 
