@@ -49,7 +49,6 @@ public class PaintFrame extends JFrame {
 		mainLayout.putConstraint(SpringLayout.WEST, controlPanel, 0, SpringLayout.WEST, this);
 		clear.addActionListener(new MenuListener("clear"));
 		exit.addActionListener(new MenuListener("exit"));
-		//this.pack();
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}

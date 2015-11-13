@@ -22,25 +22,25 @@ public class ConnectFrame extends JFrame {
 		JLabel portLabel = new JLabel("Port: ");
 		JTextField hostText = new JTextField("localhost");
 		JTextField portText = new JTextField("2333");
-		JButton hostButton = new JButton("Start as a host");
-		JButton guestButton = new JButton("Connect to a host");
+		JButton serverButton = new JButton("Start as a host");
+		JButton clientButton = new JButton("Connect to a host");
 		this.getContentPane().add(hostLabel);
 		this.getContentPane().add(hostText);
 		this.getContentPane().add(portLabel);
 		this.getContentPane().add(portText);
-		this.getContentPane().add(hostButton);
-		this.getContentPane().add(guestButton);
+		this.getContentPane().add(serverButton);
+		this.getContentPane().add(clientButton);
 		hostLabel.setFont(new Font(null, Font.PLAIN, 18));
 		portLabel.setFont(new Font(null, Font.PLAIN, 18));
 		hostLabel.setBounds(5, 10,50,25);
 		portLabel.setBounds(5, 50,50,25);
 		hostText.setBounds(60, 10,230,25);
 		portText.setBounds(60, 50,230,25);
-		hostButton.setBounds(5, 80,140,40);
-		guestButton.setBounds(150, 80,140,40);
+		serverButton.setBounds(5, 80,140,40);
+		clientButton.setBounds(150, 80,140,40);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
-		class GuestListener implements ActionListener {
+		class ClientListener implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -71,14 +71,14 @@ public class ConnectFrame extends JFrame {
 				}
 			}
 		}
-		class HostListener implements ActionListener {
+		class ServerListener implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				hostText.setText("localhost");
 				try {
-					String port = portText.getText();
+					port = portText.getText();
 					if (Integer.parseInt(port) >=0 && Integer.parseInt(port) <= 65535) {
 						new Network(host, port).connectAsHost();
 						setVisible(false);
@@ -90,9 +90,8 @@ public class ConnectFrame extends JFrame {
 					JOptionPane.showMessageDialog(null, "Invalid Port");
 				}
 			}
-
 		}
-		guestButton.addActionListener(new GuestListener());
-		hostButton.addActionListener(new HostListener());
+		clientButton.addActionListener(new ClientListener());
+		serverButton.addActionListener(new ServerListener());
 	}
 }

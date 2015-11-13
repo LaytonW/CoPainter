@@ -1,5 +1,7 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,10 +19,61 @@ public class ControlPanel extends JPanel {
 	 */
 	public static PenPoint current;
 	private static final long serialVersionUID = 1L;
-
 	ControlPanel() {
 		SpringLayout controlLayout = new SpringLayout();
 		this.setLayout(controlLayout);
+		JTextField radiusText = new JTextField("4");
+		class RadiusOption extends JButton implements ActionListener {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+			private int radius;
+
+			public void paintComponent(Graphics g) {
+				g.setColor(Color.WHITE);
+				g.fillRect(0, 0, 45, 45);
+				g.setColor(Color.BLACK);
+				g.fillOval(45 / 2 - radius, 45 / 2 - radius, radius * 2, radius * 2);
+				this.addActionListener(this);
+			}
+
+			RadiusOption(int r) {
+				radius = r;
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				current.setRadius(radius);
+				radiusText.setText(Integer.toString(radius));
+			}
+		}
+		class ColorOption extends JButton implements ActionListener {
+			private static final long serialVersionUID = 1L;
+			private int R;
+			private int G;
+			private int B;
+
+			public void paintComponent(Graphics g) {
+				g.setColor(new Color(R, G, B));
+				g.fillRect(0, 0, 45, 45);
+				this.addActionListener(this);
+			}
+
+			ColorOption(int red, int green, int blue) {
+				R = red;
+				G = green;
+				B = blue;
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				current.setPointColor(R, G, B);
+				current.repaint();
+			}
+		}
 		ColorOption[] colorOption = new ColorOption[4];
 		colorOption[0] = new ColorOption(0, 0, 0);
 		colorOption[1] = new ColorOption(255, 0, 0);
@@ -28,7 +81,6 @@ public class ControlPanel extends JPanel {
 		colorOption[3] = new ColorOption(0, 255, 0);
 		RadiusOption[] radiusOption = new RadiusOption[4];
 		JLabel radiusLabel = new JLabel("Radius:");
-		JTextField radiusText = new JTextField("4");
 		JButton radiusUp = new JButton("+1");
 		JButton radiusDown = new JButton("-1");
 		JButton colorButton = new JButton("Custom");
@@ -72,15 +124,12 @@ public class ControlPanel extends JPanel {
 		controlLayout.putConstraint(SpringLayout.WEST, radiusUp, 10, SpringLayout.EAST, radiusText);
 		controlLayout.putConstraint(SpringLayout.NORTH, radiusDown, 20, SpringLayout.NORTH, this);
 		controlLayout.putConstraint(SpringLayout.WEST, radiusDown, 10, SpringLayout.EAST, radiusText);
-		current.setBounds(0, 0, 700, 700);
 		colorButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new ColorChooserFrame();
 			}
 		});
 		class RadiusCustomListener implements ActionListener {
-
-			
 			public String change;
 			RadiusCustomListener(String c) {
 				change=c;
@@ -96,7 +145,6 @@ public class ControlPanel extends JPanel {
 						}
 						else if (change=="down"&&r!=1) {
 							r=r-1;
-							radiusText.selectAll();
 						}
 						current.setRadius(r);
 						radiusText.setText(Integer.toString(r));
@@ -131,7 +179,6 @@ public class ControlPanel extends JPanel {
 					JOptionPane.showMessageDialog(null, "Invalid Input");
 				}
 			}
-			
 		});
 	}
 }
