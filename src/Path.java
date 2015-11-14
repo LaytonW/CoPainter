@@ -23,4 +23,15 @@ public class Path implements Serializable {
 		for (Point point : p.points)
 			points.add((Point) point.clone());
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Path p = (Path) obj;
+		boolean samePoints = points.size() == p.points.size();
+		if (samePoints)
+			for (int i = 0; i < points.size(); ++i)
+				if (!points.get(i).equals(p.points.get(i)))
+					samePoints = false;
+		return color.equals(p.color) && radius == p.radius && samePoints;
+	}
 }

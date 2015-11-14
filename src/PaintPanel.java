@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,24 +17,24 @@ import javax.swing.JPanel;
 public class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 	
 	private static final long serialVersionUID = 1L;
-	public static ArrayList<Path> buffer;
-	public static ArrayList<Path> workspace;
+	public static Set<Path> buffer;
+	private Path currentPath;
 	private NetworkManager networkManager;
 	PaintPanel (NetworkManager n) {
 		networkManager = n;
 		new Thread(networkManager).start();
-		buffer=new ArrayList<Path>();
-		workspace = new ArrayList<Path>();
+		buffer=new HashSet<Path>();
 		this.addMouseMotionListener(this);
 		this.addMouseListener(this);
 	}
 	public void clear() {
-		buffer = new ArrayList<Path>();
-		workspace = new ArrayList<Path>();
+		buffer = new HashSet<Path>();
+		if (networkManager instanceof ServerManager)
+			networkManager.write("clear");
 	}
 	
 	public void updateNetwork() {
-		networkManager.write(new ArrayList<Path>(buffer));
+		networkManager.write(new HashSet<Path>(buffer));
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -44,10 +43,21 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 		this.setCursor(blankCursor);
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		Set<Path> board = new HashSet<Path>();
-		board.addAll(workspace);
-		board.addAll(buffer);
-		for (Path path : board) {
+		if (currentPath != null) {
+			g.setColor(currentPath.color);
+			if(g instanceof Graphics2D) {
+				Graphics2D g2D=(Graphics2D) g;
+				g2D.setStroke(new BasicStroke(currentPath.radius*2,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
+			}
+			Point prevPoint=null;
+			for (Point p:currentPath.points) {
+				if(prevPoint!=null) {
+					g.drawLine(prevPoint.x, prevPoint.y, p.x, p.y);
+				}
+				prevPoint=p;
+			}
+		}
+		for (Path path : buffer) {
 			g.setColor(path.color);
 			if (path.points.size()==1)
 				g.fillOval(path.points.get(0).x-path.radius,path.points.get(0).y-path.radius,path.radius*2,path.radius*2);
@@ -69,7 +79,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
-		workspace.get(workspace.size() - 1).points.add(e.getPoint());
+		currentPath.points.add(e.getPoint());
 		repaint();
 	}
 
@@ -110,17 +120,17 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		workspace.add(new Path(ControlPanel.current.getColor(),ControlPanel.current.getRadius()));
+		currentPath = new Path(ControlPanel.current.getColor(),ControlPanel.current.getRadius());
 		//currentPath.points.clear();
-		workspace.get(workspace.size() - 1).points.add(getMousePosition());
+		currentPath.points.add(getMousePosition());
 		repaint();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		for (Path path : workspace)
-			buffer.add(new Path(path));
+		buffer.add(new Path(currentPath));
+		currentPath = null;
 		updateNetwork();
 	}
 }

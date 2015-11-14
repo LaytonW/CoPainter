@@ -7,7 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -61,7 +61,6 @@ public class PaintFrame extends JFrame {
 		clear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				paintPanel.clear();
-				paintPanel.updateNetwork();
 			}
 		});
 		exit.addActionListener(new ActionListener() {
@@ -90,7 +89,7 @@ public class PaintFrame extends JFrame {
 							}
 							FileOutputStream saverFileStream = new FileOutputStream(saveFile);
 							ObjectOutputStream saverObjectStream = new ObjectOutputStream(saverFileStream);
-							saverObjectStream.writeObject(PaintPanel.workspace);
+							saverObjectStream.writeObject(PaintPanel.buffer);
 							saverObjectStream.writeObject(ControlPanel.current);
 							saverObjectStream.close();
 							done = true;
@@ -125,14 +124,13 @@ public class PaintFrame extends JFrame {
 							Object obj1 = loadObjectStream.readObject();
 							Object obj2 = loadObjectStream.readObject();
 							loadObjectStream.close();
-							if (!(obj1 instanceof ArrayList<?> && obj2 instanceof PenPoint)) {
+							if (!(obj1 instanceof HashSet<?> && obj2 instanceof PenPoint)) {
 								JOptionPane.showMessageDialog(rootPane, "Resolving file "
 										+ loadFile.getName() + " failed!",
 										"File broken", JOptionPane.ERROR_MESSAGE);
 								break;
 							}
-							PaintPanel.workspace = (ArrayList<Path>) obj1;
-							PaintPanel.buffer = (ArrayList<Path>) obj1;
+							PaintPanel.buffer = (HashSet<Path>) obj1;
 							paintPanel.updateNetwork();
 							ControlPanel.current = (PenPoint) obj2;
 							done = true;
