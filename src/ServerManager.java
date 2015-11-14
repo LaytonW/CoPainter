@@ -24,7 +24,7 @@ public class ServerManager implements NetworkManager {
 				Socket s = ss.accept();
 				ObjectOutputStream writer = new ObjectOutputStream(s.getOutputStream());
 				writers.add(writer);
-				write(writer, PaintPanel.paths);
+				write(writer, PaintPanel.buffer);
 				new Thread(new ClientHandler(s, writer)).start();
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Server: Connection failed!\n"
@@ -74,11 +74,7 @@ public class ServerManager implements NetworkManager {
 			try {
 				while (true) {
 					Object obj = reader.readObject();
-					PaintPanel.paths = (ArrayList<Path>) obj;
-					if (PaintPanel.currentPath != null) {
-						PaintPanel.currentPath = new Path(PaintPanel.currentPath);
-						PaintPanel.paths.add(PaintPanel.currentPath);
-					}
+					PaintPanel.buffer = (ArrayList<Path>) obj;
 					PaintFrame.paintPanel.repaint();
 					write(obj);
 				}
