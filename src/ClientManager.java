@@ -4,8 +4,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.HashSet;
-
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class ClientManager implements NetworkManager {
@@ -30,8 +29,8 @@ public class ClientManager implements NetworkManager {
 				System.out.println(obj);
 				if (obj.toString().equals("clear"))
 					PaintFrame.paintPanel.clear();
-				else if (obj instanceof HashSet<?>)
-					PaintPanel.buffer = (HashSet<Path>) obj;
+				else if (obj instanceof ArrayList<?>)
+					PaintPanel.buffer = (ArrayList<Path>) obj;
 				PaintFrame.paintPanel.repaint();
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Host is gone!",

@@ -7,8 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.HashSet;
-
+import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -124,13 +123,13 @@ public class PaintFrame extends JFrame {
 							Object obj1 = loadObjectStream.readObject();
 							Object obj2 = loadObjectStream.readObject();
 							loadObjectStream.close();
-							if (!(obj1 instanceof HashSet<?> && obj2 instanceof PenPoint)) {
+							if (!(obj1 instanceof ArrayList<?> && obj2 instanceof PenPoint)) {
 								JOptionPane.showMessageDialog(rootPane, "Resolving file "
 										+ loadFile.getName() + " failed!",
 										"File broken", JOptionPane.ERROR_MESSAGE);
 								break;
 							}
-							PaintPanel.buffer = (HashSet<Path>) obj1;
+							PaintPanel.buffer = (ArrayList<Path>) obj1;
 							paintPanel.updateNetwork();
 							ControlPanel.current = (PenPoint) obj2;
 							done = true;

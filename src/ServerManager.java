@@ -4,8 +4,6 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashSet;
-
 import javax.swing.JOptionPane;
 
 public class ServerManager implements NetworkManager {
@@ -75,8 +73,8 @@ public class ServerManager implements NetworkManager {
 			try {
 				while (true) {
 					Object obj = reader.readObject();
-					if (obj instanceof HashSet<?>)
-						PaintPanel.buffer = (HashSet<Path>) obj;
+					if (obj instanceof ArrayList<?>)
+						PaintPanel.buffer = (ArrayList<Path>) obj;
 					PaintFrame.paintPanel.repaint();
 					write(obj);
 				}

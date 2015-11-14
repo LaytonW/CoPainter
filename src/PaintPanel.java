@@ -9,32 +9,30 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.ArrayList;
 import javax.swing.JPanel;
 
 public class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 	
 	private static final long serialVersionUID = 1L;
-	public static Set<Path> buffer;
+	public static ArrayList<Path> buffer;
 	private Path currentPath;
 	private NetworkManager networkManager;
 	PaintPanel (NetworkManager n) {
 		networkManager = n;
 		new Thread(networkManager).start();
-		buffer=new HashSet<Path>();
+		buffer=new ArrayList<Path>();
 		this.addMouseMotionListener(this);
 		this.addMouseListener(this);
 	}
 	public void clear() {
-		buffer = new HashSet<Path>();
+		buffer = new ArrayList<Path>();
 		if (networkManager instanceof ServerManager)
 			networkManager.write("clear");
 	}
 	
 	public void updateNetwork() {
-		networkManager.write(new HashSet<Path>(buffer));
+		networkManager.write(new ArrayList<Path>(buffer));
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -43,20 +41,6 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 		this.setCursor(blankCursor);
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		if (currentPath != null) {
-			g.setColor(currentPath.color);
-			if(g instanceof Graphics2D) {
-				Graphics2D g2D=(Graphics2D) g;
-				g2D.setStroke(new BasicStroke(currentPath.radius*2,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
-			}
-			Point prevPoint=null;
-			for (Point p:currentPath.points) {
-				if(prevPoint!=null) {
-					g.drawLine(prevPoint.x, prevPoint.y, p.x, p.y);
-				}
-				prevPoint=p;
-			}
-		}
 		for (Path path : buffer) {
 			g.setColor(path.color);
 			if (path.points.size()==1)
@@ -73,6 +57,20 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 					}
 					prevPoint=p;
 				}
+			}
+		}
+		if (currentPath != null) {
+			g.setColor(currentPath.color);
+			if(g instanceof Graphics2D) {
+				Graphics2D g2D=(Graphics2D) g;
+				g2D.setStroke(new BasicStroke(currentPath.radius*2,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
+			}
+			Point prevPoint=null;
+			for (Point p:currentPath.points) {
+				if(prevPoint!=null) {
+					g.drawLine(prevPoint.x, prevPoint.y, p.x, p.y);
+				}
+				prevPoint=p;
 			}
 		}
 	}
