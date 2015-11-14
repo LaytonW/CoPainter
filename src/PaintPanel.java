@@ -17,7 +17,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	
 	private static final long serialVersionUID = 1L;
 	public static ArrayList<Path> paths;
-	private Path currentPath;
+	public static Path currentPath;
 	private NetworkManager networkManager;
 	PaintPanel (NetworkManager n) {
 		networkManager = n;
