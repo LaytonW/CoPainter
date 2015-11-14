@@ -28,7 +28,8 @@ public class ClientManager implements NetworkManager {
 			try {
 				Object obj = reader.readObject();
 				PaintPanel.paths = (ArrayList<Path>) obj;
-				PaintPanel.paths.add(PaintPanel.currentPath);
+				if (PaintPanel.currentPath != null)
+					PaintPanel.paths.add(PaintPanel.currentPath);
 				PaintFrame.paintPanel.repaint();
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Host is gone!",
