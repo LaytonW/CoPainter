@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -61,7 +60,6 @@ public class PaintFrame extends JFrame {
 		clear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				paintPanel.clear();
-				paintPanel.updateNetwork();
 			}
 		});
 		exit.addActionListener(new ActionListener() {
@@ -90,7 +88,7 @@ public class PaintFrame extends JFrame {
 							}
 							FileOutputStream saverFileStream = new FileOutputStream(saveFile);
 							ObjectOutputStream saverObjectStream = new ObjectOutputStream(saverFileStream);
-							saverObjectStream.writeObject(PaintPanel.paths);
+							saverObjectStream.writeObject(PaintPanel.buffer);
 							saverObjectStream.writeObject(ControlPanel.current);
 							saverObjectStream.close();
 							done = true;
@@ -131,7 +129,7 @@ public class PaintFrame extends JFrame {
 										"File broken", JOptionPane.ERROR_MESSAGE);
 								break;
 							}
-							PaintPanel.paths = (ArrayList<Path>) obj1;
+							PaintPanel.buffer = (ArrayList<Path>) obj1;
 							paintPanel.updateNetwork();
 							ControlPanel.current = (PenPoint) obj2;
 							done = true;
