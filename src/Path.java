@@ -16,4 +16,9 @@ public class Path implements Serializable {
 		color=c;
 		radius=r;
 	}
+	
+	Path (Path p) {
+		color = p.color;
+		radius = p.radius;
+	}
 }

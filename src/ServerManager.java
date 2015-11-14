@@ -75,8 +75,10 @@ public class ServerManager implements NetworkManager {
 				while (true) {
 					Object obj = reader.readObject();
 					PaintPanel.paths = (ArrayList<Path>) obj;
-					if (PaintPanel.currentPath != null)
+					if (PaintPanel.currentPath != null) {
+						PaintPanel.currentPath = new Path(PaintPanel.currentPath);
 						PaintPanel.paths.add(PaintPanel.currentPath);
+					}
 					PaintFrame.paintPanel.repaint();
 					write(obj);
 				}
