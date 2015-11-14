@@ -17,6 +17,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	
 	private static final long serialVersionUID = 1L;
 	public static ArrayList<Path> paths;
+	private Path currentPath;
 	private NetworkManager networkManager;
 	PaintPanel (NetworkManager n) {
 		networkManager = n;
@@ -61,9 +62,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
-		synchronized(this) {
-			paths.get(paths.size()-1).points.add(e.getPoint());
-		}
+		currentPath.points.add(e.getPoint());
 		repaint();
 	}
 
@@ -104,11 +103,10 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		synchronized(this) {
-			paths.add(new Path(ControlPanel.current.getColor(),ControlPanel.current.getRadius()));
-			paths.get(paths.size()-1).points.clear();
-			paths.get(paths.size()-1).points.add(getMousePosition());
-		}
+		currentPath = new Path(ControlPanel.current.getColor(),ControlPanel.current.getRadius());
+		paths.add(currentPath);
+		//currentPath.points.clear();
+		currentPath.points.add(getMousePosition());
 		repaint();
 	}
 
