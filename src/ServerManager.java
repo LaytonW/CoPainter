@@ -27,7 +27,7 @@ public class ServerManager implements NetworkManager {
 				write(writer, PaintPanel.paths);
 				new Thread(new ClientHandler(s, writer)).start();
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Server: Network failed!\n"
+				JOptionPane.showMessageDialog(null, "Server: Connection failed!\n"
 						+ e.toString(),
 						"Network failed", JOptionPane.ERROR_MESSAGE);
 			}
@@ -44,7 +44,7 @@ public class ServerManager implements NetworkManager {
 			writer.writeObject(obj);
 			writer.flush();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Server: Network failed!\n"
+			JOptionPane.showMessageDialog(null, "Server: Cannot write to stream\n"
 					+ e.toString(),
 					"Network failed", JOptionPane.ERROR_MESSAGE);
 		}
@@ -62,7 +62,7 @@ public class ServerManager implements NetworkManager {
 				writer = w;
 				reader = new ObjectInputStream(this.s.getInputStream());
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Server: Network failed!\n"
+				JOptionPane.showMessageDialog(null, "Server: Cannot get socket stream.\n"
 						+ e.toString(),
 						"Network failed", JOptionPane.ERROR_MESSAGE);
 			}
@@ -78,18 +78,16 @@ public class ServerManager implements NetworkManager {
 					PaintFrame.paintPanel.repaint();
 					write(obj);
 				}
-			} catch (java.io.EOFException e) {
+			} catch (Exception e) {
 				try {
 					s.close();
 					writers.remove(writer);
 				} catch (IOException e1) {
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Server: Cannot reset socket connection.\n"
+							+ e.toString(),
+							"Network failed", JOptionPane.ERROR_MESSAGE);
 				}
 				return;
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Server: Network failed!\n"
-						+ e.toString(),
-						"Network failed", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
