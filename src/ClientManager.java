@@ -26,7 +26,6 @@ public class ClientManager implements NetworkManager {
 		while (true) {
 			try {
 				Object obj = reader.readObject();
-				System.out.println(obj);
 				if (obj.toString().equals("clear"))
 					PaintFrame.paintPanel.clear();
 				else if (obj instanceof ArrayList<?>)
