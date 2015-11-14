@@ -10,21 +10,42 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Stack;
+
 import javax.swing.JPanel;
 
 public class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 	
 	private static final long serialVersionUID = 1L;
 	public static ArrayList<Path> buffer;
+	private Stack<Path> undoStack;
 	private Path currentPath;
 	private NetworkManager networkManager;
+	
 	PaintPanel (NetworkManager n) {
 		networkManager = n;
 		new Thread(networkManager).start();
 		buffer=new ArrayList<Path>();
-		this.addMouseMotionListener(this);
-		this.addMouseListener(this);
+		undoStack = new Stack<Path>();
+		addMouseMotionListener(this);
+		addMouseListener(this);
+		setFocusable(true);
 	}
+	
+	public void undo() {
+		if (!buffer.isEmpty()) {
+			undoStack.push(buffer.remove(buffer.size() - 1));
+			updateNetwork();
+		}
+	}
+	
+	public void redo() {
+		if (!undoStack.isEmpty()) {
+			buffer.add(new Path(undoStack.pop()));
+			updateNetwork();
+		}
+	}
+	
 	public void clear() {
 		buffer = new ArrayList<Path>();
 		if (networkManager instanceof ServerManager)
@@ -71,16 +92,15 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 			}
 		}
 	}
+	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
 		currentPath.points.add(e.getPoint());
 		repaint();
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
 		try {
 			ControlPanel.current.setLocation(e.getX()-ControlPanel.current.getRadius(),e.getY()-ControlPanel.current.getRadius());
 		} catch (Exception ex) {
@@ -89,13 +109,10 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-	}
+	public void mouseClicked(MouseEvent arg0) {}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
 		this.setCursor(blankCursor);
@@ -110,23 +127,19 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		remove(ControlPanel.current);
 		repaint();
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		currentPath = new Path(ControlPanel.current.getColor(),ControlPanel.current.getRadius());
-		//currentPath.points.clear();
 		currentPath.points.add(getMousePosition());
 		repaint();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		buffer.add(new Path(currentPath));
 		currentPath = null;
 		updateNetwork();

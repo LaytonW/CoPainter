@@ -5,9 +5,6 @@ import java.util.ArrayList;
 
 public class Path implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	public ArrayList<Point> points=new ArrayList<Point>();
 	public Color color;
