@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 public class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 	
 	private static final long serialVersionUID = 1L;
-	public static ArrayList<Path> buffer;
+	public volatile static ArrayList<Path> buffer;
 	private Stack<Path> undoStack;
 	private Path currentPath;
 	private NetworkManager networkManager;
@@ -52,7 +52,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 			networkManager.write("clear");
 	}
 	
-	public void updateNetwork() {
+	public synchronized void updateNetwork() {
 		networkManager.write(new ArrayList<Path>(buffer));
 	}
 	
