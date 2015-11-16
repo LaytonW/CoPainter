@@ -7,9 +7,7 @@ import java.net.InetAddress;
 import javax.swing.*;
 
 public class ConnectFrame extends JFrame {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	public String host;
 	public String port;

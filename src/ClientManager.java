@@ -5,7 +5,6 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
-
 import javax.swing.JOptionPane;
 
 public class ClientManager implements NetworkManager {
@@ -27,25 +26,20 @@ public class ClientManager implements NetworkManager {
 		while (true) {
 			try {
 				Object obj = reader.readObject();
-				PaintPanel.paths = (ArrayList<Path>) obj;
+				if (obj.toString().equals("clear"))
+					PaintFrame.paintPanel.clear();
+				else if (obj instanceof ArrayList<?>)
+					PaintPanel.buffer = (ArrayList<Path>) obj;
 				PaintFrame.paintPanel.repaint();
-			} catch (java.io.EOFException e) {
+			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Host is gone!",
 						"Connection dropped", JOptionPane.ERROR_MESSAGE);
 				try {
 					s.close();
 				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				return;
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Client read: Network failed!\n"
-						+ e.toString(),
-						"Network failed", JOptionPane.ERROR_MESSAGE);
-				try {
-					s.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Client: Cannot close socket connection.\n"
+							+ e.toString(),
+							"Network failed", JOptionPane.ERROR_MESSAGE);
 				}
 				return;
 			}
@@ -59,13 +53,15 @@ public class ClientManager implements NetworkManager {
 				writer.writeObject(obj);
 				writer.flush();
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Client write: Network failed!\n"
+				JOptionPane.showMessageDialog(null, "Client: Cannot write to stream.\n"
 						+ e.toString(),
 						"Network failed", JOptionPane.ERROR_MESSAGE);
 				try {
 					s.close();
 				} catch (IOException e1) {
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Client: Cannot close socket connection.\n"
+							+ e.toString(),
+							"Network failed", JOptionPane.ERROR_MESSAGE);
 				}
 				return;
 			}

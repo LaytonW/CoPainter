@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,19 +16,17 @@ import javax.swing.SpringLayout;
 
 public class ControlPanel extends JPanel{
 
-	/**
-	 * 
-	 */
 	public static PenPoint current;
+	private ColorChooserFrame colorChooserFrame;
+	private volatile JTextField radiusText;
 	private static final long serialVersionUID = 1L;
 	ControlPanel() {
 		SpringLayout controlLayout = new SpringLayout();
 		this.setLayout(controlLayout);
-		JTextField radiusText = new JTextField("4");
+		radiusText = new JTextField("4");
+		colorChooserFrame = new ColorChooserFrame();
 		class RadiusOption extends JButton implements ActionListener {
-			/**
-			 * 
-			 */
+
 			private static final long serialVersionUID = 1L;
 			private int radius;
 
@@ -44,7 +44,6 @@ public class ControlPanel extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				current.setRadius(radius);
 				radiusText.setText(Integer.toString(radius));
 			}
@@ -70,7 +69,6 @@ public class ControlPanel extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				current.setPointColor(R, G, B);
 				current.repaint();
 			}
@@ -84,18 +82,21 @@ public class ControlPanel extends JPanel{
 		JLabel radiusLabel = new JLabel("Radius:");
 		JButton radiusUp = new JButton("+1");
 		JButton radiusDown = new JButton("-1");
+		JButton radiusButton = new JButton("Set");
 		JButton colorButton = new JButton("Custom");
 		radiusText.setPreferredSize(new Dimension(70, 45));
 		current = new PenPoint();
 		current.setPointColor(0, 0, 0);
 		current.setRadius(4);
-		radiusLabel.setPreferredSize(new Dimension(80, 45));
-		radiusUp.setPreferredSize(new Dimension(80, 45/2));
-		radiusDown.setPreferredSize(new Dimension(80, 45/2));
+		radiusLabel.setPreferredSize(new Dimension(55, 45));
+		radiusUp.setPreferredSize(new Dimension(60, 45/2));
+		radiusDown.setPreferredSize(new Dimension(60, 45/2));
+		radiusButton.setPreferredSize(new Dimension(60, 45));
 		colorButton.setPreferredSize(new Dimension(90, 45));
 		this.add(colorButton);
 		this.add(radiusLabel);
 		this.add(radiusText);
+		this.add(radiusButton);
 		this.add(radiusUp);
 		this.add(radiusDown);
 		this.setSize(700, 45);
@@ -121,52 +122,98 @@ public class ControlPanel extends JPanel{
 		}
 		controlLayout.putConstraint(SpringLayout.NORTH, radiusText, 0, SpringLayout.NORTH, this);
 		controlLayout.putConstraint(SpringLayout.WEST, radiusText, 10, SpringLayout.EAST, radiusOption[3]);
+		controlLayout.putConstraint(SpringLayout.NORTH, radiusButton, 0, SpringLayout.NORTH, radiusText);
+		controlLayout.putConstraint(SpringLayout.WEST, radiusButton, 10, SpringLayout.EAST, radiusText);
 		controlLayout.putConstraint(SpringLayout.NORTH, radiusUp, 0, SpringLayout.NORTH, this);
-		controlLayout.putConstraint(SpringLayout.WEST, radiusUp, 10, SpringLayout.EAST, radiusText);
-		controlLayout.putConstraint(SpringLayout.NORTH, radiusDown, 20, SpringLayout.NORTH, this);
-		controlLayout.putConstraint(SpringLayout.WEST, radiusDown, 10, SpringLayout.EAST, radiusText);
+		controlLayout.putConstraint(SpringLayout.WEST, radiusUp, 5, SpringLayout.EAST, radiusButton);
+		controlLayout.putConstraint(SpringLayout.NORTH, radiusDown, 0, SpringLayout.SOUTH, radiusUp);
+		controlLayout.putConstraint(SpringLayout.WEST, radiusDown, 5, SpringLayout.EAST, radiusButton);
 		colorButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new ColorChooserFrame();
+				colorChooserFrame.setVisible(true);
 			}
 		});
-		class RadiusCustomListener implements ActionListener {
-			public String change;
+		class RadiusCustomListener implements MouseListener {
+			
+			private String change;
+			private volatile boolean pressed;
+			private volatile boolean running;
+			
 			RadiusCustomListener(String c) {
 				change=c;
+				pressed = false;
+				running = false;
 			}
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				try {
-					int r = Integer.parseInt(radiusText.getText());
-					if (r > 0 && r < 350) {
-						if (change=="up" && r!=349) {
-							r=r+1;
+			public void mouseClicked(MouseEvent e) {}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				pressed = true;
+				startChangingThread();
+			}
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				pressed = false;
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			
+			private synchronized boolean check() {
+				if(running) return false;
+				running = true;
+				return true;
+			}
+			
+			private void startChangingThread() {
+				if (check()) {
+					new Thread() {
+						public void run() {
+							do {
+								try {
+									int r = Integer.parseInt(radiusText.getText());
+									if (r > 0 && r < 350) {
+										if (change=="up" && r!=349) {
+											++r;
+											Thread.sleep(100);
+										}
+										else if (change=="down"&&r!=1) {
+											--r;
+											Thread.sleep(100);
+										}
+										current.setRadius(r);
+										radiusText.setText(Integer.toString(r));
+										radiusText.repaint();
+										current.repaint();
+										PaintFrame.paintPanel.repaint();
+										repaint();
+									}
+								} catch (Exception ex) {
+									JOptionPane.showMessageDialog(null,
+											"Invalid Input. radius must in the range of 1-349");
+									ex.printStackTrace();
+									radiusText.setText(String.valueOf(current.getRadius()));
+									pressed = false;
+									running = false;
+									return;
+								}
+							} while (pressed);
+							running = false;
 						}
-						else if (change=="down"&&r!=1) {
-							r=r-1;
-						}
-						current.setRadius(r);
-						radiusText.setText(Integer.toString(r));
-						radiusText.selectAll();
-						radiusText.repaint();
-						current.repaint();
-						PaintFrame.paintPanel.repaint();
-						repaint();
-					}
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Invalid Input. radius must in the range of 1-349");
+					}.start();
 				}
 			}
 		}
-		radiusUp.addActionListener(new RadiusCustomListener("up"));
-		radiusDown.addActionListener(new RadiusCustomListener("down"));
-		radiusText.addActionListener(new ActionListener() {
+		class RadiusSetListener implements ActionListener {
 
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
+			public void actionPerformed(ActionEvent e) {
 				try {
 					int r = Integer.parseInt(radiusText.getText());
 					if (r > 0 && r < 350) {
@@ -175,11 +222,18 @@ public class ControlPanel extends JPanel{
 						PaintFrame.paintPanel.repaint();
 						repaint();
 					} else
-						JOptionPane.showMessageDialog(null, "Invalid Input. radius must in the range of 1-349");
+						JOptionPane.showMessageDialog(null,
+								"Invalid Input. radius must in the range of 1-349");
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(null, "Invalid Input");
+				} finally {
+					radiusText.setText(String.valueOf(current.getRadius()));
 				}
 			}
-		});
+		}
+		radiusUp.addMouseListener(new RadiusCustomListener("up"));
+		radiusDown.addMouseListener(new RadiusCustomListener("down"));
+		radiusText.addActionListener(new RadiusSetListener());
+		radiusButton.addActionListener(new RadiusSetListener());
 	}
 }

@@ -2,16 +2,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -39,9 +35,13 @@ public class PaintFrame extends JFrame {
 		menuBar = new JMenuBar();
 		JMenu menu = new JMenu("Control");
 		JMenuItem clear = new JMenuItem("Clear");
+		JMenuItem undo = new JMenuItem("Undo");
+		JMenuItem redo = new JMenuItem("Redo");
 		JMenuItem save = new JMenuItem("Save");
 		JMenuItem load = new JMenuItem("Load");
 		JMenuItem exit = new JMenuItem("Exit");
+		JMenu helpMenu = new JMenu("Help");
+		JMenuItem help = new JMenuItem("Help");
 		ControlPanel controlPanel = new ControlPanel();
 		paintPanel = new PaintPanel(n);
 		if (n instanceof ServerManager) {
@@ -49,8 +49,14 @@ public class PaintFrame extends JFrame {
 			menu.add(load);
 		}
 		menu.add(save);
+		menu.addSeparator();
+		menu.add(undo);
+		menu.add(redo);
+		menu.addSeparator();
 		menu.add(exit);
+		helpMenu.add(help);
 		menuBar.add(menu);
+		menuBar.add(helpMenu);
 		this.setJMenuBar(menuBar);
 		controlPanel.setPreferredSize(new Dimension(800, 100));
 		paintPanel.setPreferredSize(new Dimension(800, 600));
@@ -61,10 +67,19 @@ public class PaintFrame extends JFrame {
 		mainLayout.putConstraint(SpringLayout.WEST, paintPanel, 0, SpringLayout.WEST, this);
 		mainLayout.putConstraint(SpringLayout.NORTH, controlPanel, 0, SpringLayout.SOUTH, paintPanel);
 		mainLayout.putConstraint(SpringLayout.WEST, controlPanel, 0, SpringLayout.WEST, this);
+		undo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				paintPanel.undo();
+			}
+		});
+		redo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				paintPanel.redo();
+			}
+		});
 		clear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				paintPanel.clear();
-				paintPanel.updateNetwork();
 			}
 		});
 		exit.addActionListener(new ActionListener() {
@@ -93,7 +108,7 @@ public class PaintFrame extends JFrame {
 							}
 							FileOutputStream saverFileStream = new FileOutputStream(saveFile);
 							ObjectOutputStream saverObjectStream = new ObjectOutputStream(saverFileStream);
-							saverObjectStream.writeObject(PaintPanel.paths);
+							saverObjectStream.writeObject(PaintPanel.buffer);
 							saverObjectStream.writeObject(ControlPanel.current);
 							saverObjectStream.close();
 							done = true;
@@ -134,7 +149,7 @@ public class PaintFrame extends JFrame {
 										"File broken", JOptionPane.ERROR_MESSAGE);
 								break;
 							}
-							PaintPanel.paths = (ArrayList<Path>) obj1;
+							PaintPanel.buffer = (ArrayList<Path>) obj1;
 							paintPanel.updateNetwork();
 							ControlPanel.current = (PenPoint) obj2;
 							done = true;
@@ -162,58 +177,5 @@ public class PaintFrame extends JFrame {
 		});
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
-		class controlListener implements MouseMotionListener,MouseListener{
-
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-//				paintPanel.paths.add(new Path(ControlPanel.current.getColor(),ControlPanel.current.getRadius()));
-//				paintPanel.mouseEntered(e);
-//				paintPanel.mouseDragged(e);
-//				paintPanel.repaint();
-				
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			
-		}
-		controlListener cL=new controlListener();
-		controlPanel.addMouseMotionListener(cL);
-		controlPanel.addMouseListener(cL);
 	}
 }
