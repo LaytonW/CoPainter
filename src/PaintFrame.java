@@ -2,6 +2,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -159,5 +162,58 @@ public class PaintFrame extends JFrame {
 		});
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
+		class controlListener implements MouseMotionListener,MouseListener{
+
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+//				paintPanel.paths.add(new Path(ControlPanel.current.getColor(),ControlPanel.current.getRadius()));
+//				paintPanel.mouseEntered(e);
+//				paintPanel.mouseDragged(e);
+//				paintPanel.repaint();
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			
+		}
+		controlListener cL=new controlListener();
+		controlPanel.addMouseMotionListener(cL);
+		controlPanel.addMouseListener(cL);
 	}
 }

@@ -62,6 +62,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
 		paths.get(paths.size()-1).points.add(e.getPoint());
+		//System.out.println("Dragged!");
 		repaint();
 	}
 
@@ -73,6 +74,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 		} catch (Exception ex) {
 		}
 		repaint();
+//		System.out.println("Moved!"+e);
 	}
 
 	@Override
@@ -89,6 +91,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 			ControlPanel.current.setLocation(arg0.getX()-ControlPanel.current.getRadius(),arg0.getY()-ControlPanel.current.getRadius());
 		} catch (Exception ex) {
 		}
+		//System.out.println("Entered!"+arg0);
 		repaint();
 	}
 
@@ -106,6 +109,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 		paths.get(paths.size()-1).points.clear();
 		paths.get(paths.size()-1).points.add(getMousePosition());
 		repaint();
+		//System.out.println("Pressed!"+arg0);
 	}
 
 	@Override
