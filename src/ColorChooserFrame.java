@@ -23,7 +23,6 @@ public class ColorChooserFrame extends JFrame{
 				setVisible(false);
 				dispose();
 			}
-			
 		});
 	}
 }

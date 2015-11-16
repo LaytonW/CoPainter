@@ -10,8 +10,10 @@ public class PenPoint extends JPanel {
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.WHITE);
 		g.fillOval(0, 0, radius*2, radius*2);
+		setSize(radius*2,radius*2);
 		g.setColor(color);
 		g.fillOval(0, 0, radius*2, radius*2);
+		
 	}
 
 	public void setPointColor(int red, int green, int blue) {

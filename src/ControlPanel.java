@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
-public class ControlPanel extends JPanel {
+public class ControlPanel extends JPanel{
 
 	public static PenPoint current;
 	private ColorChooserFrame colorChooserFrame;
@@ -189,10 +189,10 @@ public class ControlPanel extends JPanel {
 										}
 										current.setRadius(r);
 										radiusText.setText(Integer.toString(r));
-										//radiusText.repaint();
-										//current.repaint();
-										//PaintFrame.paintPanel.repaint();
-										//repaint();
+										radiusText.repaint();
+										current.repaint();
+										PaintFrame.paintPanel.repaint();
+										repaint();
 									}
 								} catch (Exception ex) {
 									JOptionPane.showMessageDialog(null,
