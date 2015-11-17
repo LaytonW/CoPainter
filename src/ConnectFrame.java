@@ -43,15 +43,15 @@ public class ConnectFrame extends JFrame {
 		connectLayout.putConstraint(SpringLayout.NORTH, hostLabel, 10, SpringLayout.NORTH, this);
 		connectLayout.putConstraint(SpringLayout.NORTH, hostText, 10, SpringLayout.NORTH, this);
 		connectLayout.putConstraint(SpringLayout.WEST, hostLabel, 5, SpringLayout.WEST, this);
-		connectLayout.putConstraint(SpringLayout.WEST, hostText, 10, SpringLayout.EAST, hostLabel);
+		connectLayout.putConstraint(SpringLayout.WEST, hostText, 5, SpringLayout.EAST, hostLabel);
 		connectLayout.putConstraint(SpringLayout.NORTH, portLabel, 10, SpringLayout.SOUTH, hostLabel);
 		connectLayout.putConstraint(SpringLayout.NORTH, portText, 10, SpringLayout.SOUTH, hostText);
 		connectLayout.putConstraint(SpringLayout.WEST, portLabel, 5, SpringLayout.WEST, this);
-		connectLayout.putConstraint(SpringLayout.WEST, portText, 10, SpringLayout.EAST, portLabel);
+		connectLayout.putConstraint(SpringLayout.WEST, portText, 5, SpringLayout.EAST, portLabel);
 		connectLayout.putConstraint(SpringLayout.NORTH, serverButton, 10, SpringLayout.SOUTH, portLabel);
 		connectLayout.putConstraint(SpringLayout.NORTH, clientButton, 10, SpringLayout.SOUTH, portText);
 		connectLayout.putConstraint(SpringLayout.WEST, serverButton, 5, SpringLayout.WEST, this);
-		connectLayout.putConstraint(SpringLayout.WEST, clientButton, 10, SpringLayout.EAST, serverButton);
+		connectLayout.putConstraint(SpringLayout.WEST, clientButton, 5, SpringLayout.EAST, serverButton);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		class ClientListener implements ActionListener {
