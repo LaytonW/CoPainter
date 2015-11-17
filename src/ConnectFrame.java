@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,10 +14,11 @@ public class ConnectFrame extends JFrame {
 	public String port;
 	ConnectFrame() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(300, 155);
+		this.setSize(340, 155);
 		this.setTitle("Connect to CoPainter");
 		this.getContentPane().setBackground(Color.WHITE);
-		this.getContentPane().setLayout(null);
+		SpringLayout connectLayout = new SpringLayout();
+		this.getContentPane().setLayout(connectLayout);
 		this.setResizable(false);
 		JLabel hostLabel = new JLabel("Host:");
 		JLabel portLabel = new JLabel("Port: ");
@@ -32,12 +34,24 @@ public class ConnectFrame extends JFrame {
 		this.getContentPane().add(clientButton);
 		hostLabel.setFont(new Font(null, Font.PLAIN, 18));
 		portLabel.setFont(new Font(null, Font.PLAIN, 18));
-		hostLabel.setBounds(5, 10,50,25);
-		portLabel.setBounds(5, 50,50,25);
-		hostText.setBounds(60, 10,230,25);
-		portText.setBounds(60, 50,230,25);
-		serverButton.setBounds(5, 80,140,40);
-		clientButton.setBounds(150, 80,140,40);
+		hostLabel.setPreferredSize(new Dimension(50, 25));
+		portLabel.setPreferredSize(new Dimension(50, 25));
+		hostText.setPreferredSize(new Dimension(270, 25));
+		portText.setPreferredSize(new Dimension(270, 25));
+		serverButton.setPreferredSize(new Dimension(160, 40));
+		clientButton.setPreferredSize(new Dimension(160, 40));
+		connectLayout.putConstraint(SpringLayout.NORTH, hostLabel, 10, SpringLayout.NORTH, this);
+		connectLayout.putConstraint(SpringLayout.NORTH, hostText, 10, SpringLayout.NORTH, this);
+		connectLayout.putConstraint(SpringLayout.WEST, hostLabel, 5, SpringLayout.WEST, this);
+		connectLayout.putConstraint(SpringLayout.WEST, hostText, 10, SpringLayout.EAST, hostLabel);
+		connectLayout.putConstraint(SpringLayout.NORTH, portLabel, 10, SpringLayout.SOUTH, hostLabel);
+		connectLayout.putConstraint(SpringLayout.NORTH, portText, 10, SpringLayout.SOUTH, hostText);
+		connectLayout.putConstraint(SpringLayout.WEST, portLabel, 5, SpringLayout.WEST, this);
+		connectLayout.putConstraint(SpringLayout.WEST, portText, 10, SpringLayout.EAST, portLabel);
+		connectLayout.putConstraint(SpringLayout.NORTH, serverButton, 10, SpringLayout.SOUTH, portLabel);
+		connectLayout.putConstraint(SpringLayout.NORTH, clientButton, 10, SpringLayout.SOUTH, portText);
+		connectLayout.putConstraint(SpringLayout.WEST, serverButton, 5, SpringLayout.WEST, this);
+		connectLayout.putConstraint(SpringLayout.WEST, clientButton, 10, SpringLayout.EAST, serverButton);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		class ClientListener implements ActionListener {

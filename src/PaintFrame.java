@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -122,7 +121,8 @@ public class PaintFrame extends JFrame {
 							saverObjectStream.close();
 							done = true;
 						} catch (Exception fe) {
-							JOptionPane.showMessageDialog(rootPane, fe.toString());
+							JOptionPane.showMessageDialog(rootPane, "Error saving file!\n"
+									+ fe.toString(), "Save failed", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					done = true;
@@ -188,7 +188,6 @@ public class PaintFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				String IP="";
 				try{
 					IP="Local IP: "+String.valueOf(InetAddress.getLocalHost());
