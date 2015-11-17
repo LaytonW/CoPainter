@@ -13,7 +13,7 @@ public class ConnectFrame extends JFrame {
 	public String port;
 	ConnectFrame() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(315, 170);
+		this.setSize(300, 155);
 		this.setTitle("Connect to CoPainter");
 		this.getContentPane().setBackground(Color.WHITE);
 		this.getContentPane().setLayout(null);
@@ -37,7 +37,7 @@ public class ConnectFrame extends JFrame {
 		hostText.setBounds(60, 10,230,25);
 		portText.setBounds(60, 50,230,25);
 		serverButton.setBounds(5, 80,140,40);
-		clientButton.setBounds(150, 80,160,40);
+		clientButton.setBounds(150, 80,140,40);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		class ClientListener implements ActionListener {
@@ -56,7 +56,7 @@ public class ConnectFrame extends JFrame {
 				}
 				setVisible(false);
 				dispose();
-				new PaintFrame(clientManager);
+				new PaintFrame(clientManager,Integer.parseInt(port),host);
 			}
 		}
 		class ServerListener implements ActionListener {
@@ -82,7 +82,7 @@ public class ConnectFrame extends JFrame {
 				}
 				setVisible(false);
 				dispose();
-				new PaintFrame(serverManager);
+				new PaintFrame(serverManager,port,host);
 			}
 		}
 		clientButton.addActionListener(new ClientListener());
