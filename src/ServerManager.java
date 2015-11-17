@@ -10,7 +10,6 @@ public class ServerManager implements NetworkManager {
 
 	private ServerSocket ss;
 	private ArrayList<ObjectOutputStream> writers;
-	
 	ServerManager(int p) throws IOException {
 		ss = new ServerSocket(p);
 		writers = new ArrayList<ObjectOutputStream>();
