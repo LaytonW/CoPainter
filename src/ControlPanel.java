@@ -189,10 +189,10 @@ public class ControlPanel extends JPanel{
 										}
 										current.setRadius(r);
 										radiusText.setText(Integer.toString(r));
-										radiusText.repaint();
-										current.repaint();
-										PaintFrame.paintPanel.repaint();
-										repaint();
+//										radiusText.repaint();
+//										current.repaint();
+//										PaintFrame.paintPanel.repaint();
+//										repaint();
 									}
 								} catch (Exception ex) {
 									JOptionPane.showMessageDialog(null,
