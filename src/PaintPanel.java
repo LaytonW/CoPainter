@@ -32,20 +32,6 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 		setFocusable(true);
 	}
 	
-	public void undo() {
-		if (!buffer.isEmpty()) {
-			undoStack.push(buffer.remove(buffer.size() - 1));
-			updateNetwork();
-		}
-	}
-	
-	public void redo() {
-		if (!undoStack.isEmpty()) {
-			buffer.add(new Path(undoStack.pop()));
-			updateNetwork();
-		}
-	}
-	
 	public void clear() {
 		buffer = new ArrayList<Path>();
 		if (networkManager instanceof ServerManager)
