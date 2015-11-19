@@ -10,7 +10,6 @@ public class ServerManager implements NetworkManager {
 
 	private ServerSocket ss;
 	private ArrayList<ObjectOutputStream> writers;
-	
 	ServerManager(int p) throws IOException {
 		ss = new ServerSocket(p);
 		writers = new ArrayList<ObjectOutputStream>();
@@ -67,14 +66,13 @@ public class ServerManager implements NetworkManager {
 			}
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public void run() {
 			try {
 				while (true) {
 					Object obj = reader.readObject();
-					if (obj instanceof ArrayList<?>)
-						PaintPanel.buffer = (ArrayList<Path>) obj;
+					if (obj instanceof Path)
+						PaintPanel.buffer.add((Path) obj);
 					PaintFrame.paintPanel.repaint();
 					write(obj);
 				}

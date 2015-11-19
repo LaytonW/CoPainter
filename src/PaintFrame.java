@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -24,8 +25,13 @@ public class PaintFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	public static PaintPanel paintPanel;
 	public static JMenuBar menuBar;
-	
-	PaintFrame(NetworkManager n) {
+	private int port;
+	private String ip;
+	PaintFrame(NetworkManager n,int p,String h) {
+		port=p;
+		ip=h;
+		if(ip==null)
+			ip="localhost";
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(800, 700);
 		this.setTitle("Collaborative Painter");
@@ -42,6 +48,7 @@ public class PaintFrame extends JFrame {
 		JMenuItem exit = new JMenuItem("Exit");
 		JMenu helpMenu = new JMenu("Help");
 		JMenuItem help = new JMenuItem("Help");
+		JMenuItem about=new JMenuItem("About");
 		ControlPanel controlPanel = new ControlPanel();
 		paintPanel = new PaintPanel(n);
 		if (n instanceof ServerManager) {
@@ -55,6 +62,7 @@ public class PaintFrame extends JFrame {
 		menu.addSeparator();
 		menu.add(exit);
 		helpMenu.add(help);
+		helpMenu.add(about);
 		menuBar.add(menu);
 		menuBar.add(helpMenu);
 		this.setJMenuBar(menuBar);
@@ -113,7 +121,8 @@ public class PaintFrame extends JFrame {
 							saverObjectStream.close();
 							done = true;
 						} catch (Exception fe) {
-							JOptionPane.showMessageDialog(rootPane, fe.toString());
+							JOptionPane.showMessageDialog(rootPane, "Error saving file!\n"
+									+ fe.toString(), "Save failed", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					done = true;
@@ -150,7 +159,7 @@ public class PaintFrame extends JFrame {
 								break;
 							}
 							PaintPanel.buffer = (ArrayList<Path>) obj1;
-							paintPanel.updateNetwork();
+							paintPanel.loadToNetwork();
 							ControlPanel.current = (PenPoint) obj2;
 							done = true;
 						} catch (java.io.StreamCorruptedException streamEx) {
@@ -174,6 +183,24 @@ public class PaintFrame extends JFrame {
 					done = true;
 				} while (!done);
 			}
+		});
+		about.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String IP="";
+				try{
+					IP="Local IP: "+String.valueOf(InetAddress.getLocalHost());
+				}catch(Exception ex){
+				}
+				String status;
+				if(n instanceof ServerManager)
+					status="Server";
+				else
+					status="Client";
+				JOptionPane.showMessageDialog(null,"Status: "+status+"\n"+"Server IP: "+ip+"\n"+IP+"\n"+"Port: "+Integer.toString(port));
+			}
+			
 		});
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);

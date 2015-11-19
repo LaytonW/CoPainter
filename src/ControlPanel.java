@@ -181,18 +181,14 @@ public class ControlPanel extends JPanel{
 									if (r > 0 && r < 350) {
 										if (change=="up" && r!=349) {
 											++r;
-											Thread.sleep(100);
+											Thread.sleep(150);
 										}
 										else if (change=="down"&&r!=1) {
 											--r;
-											Thread.sleep(100);
+											Thread.sleep(150);
 										}
 										current.setRadius(r);
 										radiusText.setText(Integer.toString(r));
-										//radiusText.repaint();
-										//current.repaint();
-										//PaintFrame.paintPanel.repaint();
-										//repaint();
 									}
 								} catch (Exception ex) {
 									JOptionPane.showMessageDialog(null,

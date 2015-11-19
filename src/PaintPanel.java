@@ -52,8 +52,12 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 			networkManager.write("clear");
 	}
 	
-	public synchronized void updateNetwork() {
+	public synchronized void loadToNetwork() {
 		networkManager.write(new ArrayList<Path>(buffer));
+	}
+	
+	public synchronized void updateNetwork() {
+		networkManager.write(new Path(currentPath));
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -141,7 +145,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		buffer.add(new Path(currentPath));
-		currentPath = null;
 		updateNetwork();
+		currentPath = null;
 	}
 }
