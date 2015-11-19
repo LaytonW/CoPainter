@@ -159,7 +159,7 @@ public class PaintFrame extends JFrame {
 								break;
 							}
 							PaintPanel.buffer = (ArrayList<Path>) obj1;
-							paintPanel.updateNetwork();
+							paintPanel.loadToNetwork();
 							ControlPanel.current = (PenPoint) obj2;
 							done = true;
 						} catch (java.io.StreamCorruptedException streamEx) {
