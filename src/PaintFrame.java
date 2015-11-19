@@ -17,6 +17,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SpringLayout;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PaintFrame extends JFrame {
 	/**
@@ -41,8 +42,6 @@ public class PaintFrame extends JFrame {
 		menuBar = new JMenuBar();
 		JMenu menu = new JMenu("Control");
 		JMenuItem clear = new JMenuItem("Clear");
-		JMenuItem undo = new JMenuItem("Undo");
-		JMenuItem redo = new JMenuItem("Redo");
 		JMenuItem save = new JMenuItem("Save");
 		JMenuItem load = new JMenuItem("Load");
 		JMenuItem exit = new JMenuItem("Exit");
@@ -53,13 +52,10 @@ public class PaintFrame extends JFrame {
 		paintPanel = new PaintPanel(n);
 		if (n instanceof ServerManager) {
 			menu.add(clear);
+			menu.addSeparator();
 			menu.add(load);
 		}
 		menu.add(save);
-		menu.addSeparator();
-		menu.add(undo);
-		menu.add(redo);
-		menu.addSeparator();
 		menu.add(exit);
 		helpMenu.add(help);
 		helpMenu.add(about);
@@ -75,16 +71,6 @@ public class PaintFrame extends JFrame {
 		mainLayout.putConstraint(SpringLayout.WEST, paintPanel, 0, SpringLayout.WEST, this);
 		mainLayout.putConstraint(SpringLayout.NORTH, controlPanel, 0, SpringLayout.SOUTH, paintPanel);
 		mainLayout.putConstraint(SpringLayout.WEST, controlPanel, 0, SpringLayout.WEST, this);
-		undo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				paintPanel.undo();
-			}
-		});
-		redo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				paintPanel.redo();
-			}
-		});
 		clear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				paintPanel.clear();
@@ -152,13 +138,13 @@ public class PaintFrame extends JFrame {
 							Object obj1 = loadObjectStream.readObject();
 							Object obj2 = loadObjectStream.readObject();
 							loadObjectStream.close();
-							if (!(obj1 instanceof ArrayList<?> && obj2 instanceof PenPoint)) {
+							if (!(obj1 instanceof CopyOnWriteArrayList<?> && obj2 instanceof PenPoint)) {
 								JOptionPane.showMessageDialog(rootPane, "Resolving file "
 										+ loadFile.getName() + " failed!",
 										"File broken", JOptionPane.ERROR_MESSAGE);
 								break;
 							}
-							PaintPanel.buffer = (ArrayList<Path>) obj1;
+							PaintPanel.buffer = (CopyOnWriteArrayList<Path>) obj1;
 							paintPanel.loadToNetwork();
 							ControlPanel.current = (PenPoint) obj2;
 							done = true;

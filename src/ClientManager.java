@@ -6,6 +6,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ClientManager implements NetworkManager {
 
@@ -28,8 +29,8 @@ public class ClientManager implements NetworkManager {
 				Object obj = reader.readObject();
 				if (obj.toString().equals("clear"))
 					PaintFrame.paintPanel.clear();
-				else if (obj instanceof ArrayList<?>)
-					PaintPanel.buffer = (ArrayList<Path>) obj;
+				else if (obj instanceof CopyOnWriteArrayList<?>)
+					PaintPanel.buffer = (CopyOnWriteArrayList<Path>) obj;
 				else if (obj instanceof Path)
 					PaintPanel.buffer.add((Path) obj);
 				PaintFrame.paintPanel.repaint();
