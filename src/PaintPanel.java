@@ -48,23 +48,21 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		synchronized (this) {
-			for (Path path : buffer) {
-				g.setColor(path.color);
-				if (path.points.size()==1)
-					g.fillOval(path.points.get(0).x-path.radius,path.points.get(0).y-path.radius,path.radius*2,path.radius*2);
-				else {
-					if(g instanceof Graphics2D) {
-						Graphics2D g2D=(Graphics2D) g;
-						g2D.setStroke(new BasicStroke(path.radius*2,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
+		for (Path path : buffer) {
+			g.setColor(path.color);
+			if (path.points.size()==1)
+				g.fillOval(path.points.get(0).x-path.radius,path.points.get(0).y-path.radius,path.radius*2,path.radius*2);
+			else {
+				if(g instanceof Graphics2D) {
+					Graphics2D g2D=(Graphics2D) g;
+					g2D.setStroke(new BasicStroke(path.radius*2,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
+				}
+				Point prevPoint=null;
+				for (Point p:path.points) {
+					if(prevPoint!=null) {
+						g.drawLine(prevPoint.x, prevPoint.y, p.x, p.y);
 					}
-					Point prevPoint=null;
-					for (Point p:path.points) {
-						if(prevPoint!=null) {
-							g.drawLine(prevPoint.x, prevPoint.y, p.x, p.y);
-						}
-						prevPoint=p;
-					}
+					prevPoint=p;
 				}
 			}
 		}
@@ -87,6 +85,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		currentPath.points.add(e.getPoint());
+		mouseMoved(e);
 		repaint();
 	}
 
