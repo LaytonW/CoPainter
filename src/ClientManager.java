@@ -32,7 +32,8 @@ public class ClientManager implements NetworkManager {
 				else if (obj instanceof CopyOnWriteArrayList<?>)
 					PaintPanel.buffer = (CopyOnWriteArrayList<Path>) obj;
 				else if (obj instanceof Path)
-					PaintPanel.buffer.add((Path) obj);
+					if (!PaintPanel.buffer.contains(obj))
+						PaintPanel.buffer.add((Path) obj);
 				PaintFrame.paintPanel.repaint();
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Host is gone!",
