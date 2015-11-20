@@ -37,7 +37,7 @@ public class ServerManager implements NetworkManager {
 			write(writer, obj);
 	}
 
-	public void write(ObjectOutputStream writer, Object obj) {
+	public synchronized void write(ObjectOutputStream writer, Object obj) {
 		try {
 			writer.writeObject(obj);
 			writer.flush();
