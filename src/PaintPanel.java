@@ -87,6 +87,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		currentPath.points.add(e.getPoint());
+		mouseMoved(e);
 		repaint();
 	}
 
