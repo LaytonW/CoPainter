@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
-import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -182,7 +181,7 @@ public class PaintFrame extends JFrame {
 				}catch(Exception ex){
 				}
 				if(n instanceof ServerManager)
-					JOptionPane.showMessageDialog(null,"Status: Server\n"+"Server IP: "+ip+"\n"+IP+"\n"+"Port: "+Integer.toString(port)+"\nClient Number: "+((ServerManager)n).getClientNumber());
+					JOptionPane.showMessageDialog(null,"Status: Server\n"+"Server IP: localhost\n"+IP+"\n"+"Port: "+Integer.toString(port)+"\nClient Number: "+((ServerManager)n).getClientNumber());
 				else
 					JOptionPane.showMessageDialog(null,"Status: Client\n"+"Server IP: "+ip+"\n"+IP+"\n"+"Port: "+Integer.toString(port));
 			}
