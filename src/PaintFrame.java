@@ -48,13 +48,15 @@ public class PaintFrame extends JFrame {
 		JMenu helpMenu = new JMenu("Help");
 		JMenuItem help = new JMenuItem("Help");
 		JMenuItem about=new JMenuItem("About");
+		JMenuItem reconnect=new JMenuItem("Reconnect");
 		ControlPanel controlPanel = new ControlPanel();
 		paintPanel = new PaintPanel(n);
 		if (n instanceof ServerManager) {
 			menu.add(clear);
 			menu.addSeparator();
 			menu.add(load);
-		}
+		} else
+			menu.add(reconnect);
 		menu.add(save);
 		menu.add(exit);
 		helpMenu.add(help);
@@ -185,6 +187,16 @@ public class PaintFrame extends JFrame {
 				else
 					status="Client";
 				JOptionPane.showMessageDialog(null,"Status: "+status+"\n"+"Server IP: "+ip+"\n"+IP+"\n"+"Port: "+Integer.toString(port));
+			}
+			
+		});
+		reconnect.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				dispose();
+				new ConnectFrame().setVisible(true);
 			}
 			
 		});
