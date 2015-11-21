@@ -10,6 +10,7 @@ public class ServerManager implements NetworkManager {
 
 	private ServerSocket ss;
 	private ArrayList<ObjectOutputStream> writers;
+	private int clientNumber=0;
 	ServerManager(int p) throws IOException {
 		ss = new ServerSocket(p);
 		writers = new ArrayList<ObjectOutputStream>();
@@ -47,7 +48,9 @@ public class ServerManager implements NetworkManager {
 					"Network failed", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-
+	public int getClientNumber() {
+		return clientNumber;
+	}
 	private class ClientHandler implements Runnable {
 		
 		private Socket s;
@@ -56,6 +59,7 @@ public class ServerManager implements NetworkManager {
 		
 		public ClientHandler(Socket s, ObjectOutputStream w) {
 			this.s = s;
+			++clientNumber;
 			try {
 				writer = w;
 				reader = new ObjectInputStream(this.s.getInputStream());
@@ -80,6 +84,7 @@ public class ServerManager implements NetworkManager {
 				try {
 					s.close();
 					writers.remove(writer);
+					--clientNumber;
 				} catch (IOException e1) {
 					JOptionPane.showMessageDialog(null, "Server: Cannot reset socket connection.\n"
 							+ e.toString(),
