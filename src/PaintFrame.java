@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -27,6 +28,13 @@ public class PaintFrame extends JFrame {
 	public static JMenuBar menuBar;
 	private int port;
 	private String ip;
+	final private static String[] helpText = {
+		"Welcome to CoPainter!",
+		"blah",
+		"Blah",
+		"blah blah"
+	};
+
 	PaintFrame(NetworkManager n,int p,String h) {
 		port=p;
 		ip=h;
@@ -171,6 +179,26 @@ public class PaintFrame extends JFrame {
 				} while (!done);
 			}
 		});
+		
+		help.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO
+				int i = 0;
+				JButton prevButton = new JButton("Previous");
+				JButton nextButton = new JButton("Next");
+				JButton cancButton = new JButton("Cancel");
+				prevButton.setEnabled(false);
+				JButton[] options = {prevButton, nextButton, cancButton};
+				JOptionPane.showOptionDialog(rootPane,
+					helpText[0], "Help", JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.INFORMATION_MESSAGE, null,
+					options, options[1]
+				);
+			}
+		});
+
 		about.addActionListener(new ActionListener(){
 
 			@Override
