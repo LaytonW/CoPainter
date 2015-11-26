@@ -10,7 +10,6 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -20,20 +19,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PaintFrame extends JFrame {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	public static PaintPanel paintPanel;
 	public static JMenuBar menuBar;
 	private int port;
 	private String ip;
-	final private static String[] helpText = {
-		"Welcome to CoPainter!",
-		"blah",
-		"Blah",
-		"blah blah"
-	};
 
 	PaintFrame(NetworkManager n,int p,String h) {
 		port=p;
@@ -184,18 +175,7 @@ public class PaintFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO
-				int i = 0;
-				JButton prevButton = new JButton("Previous");
-				JButton nextButton = new JButton("Next");
-				JButton cancButton = new JButton("Cancel");
-				prevButton.setEnabled(false);
-				JButton[] options = {prevButton, nextButton, cancButton};
-				JOptionPane.showOptionDialog(rootPane,
-					helpText[0], "Help", JOptionPane.YES_NO_CANCEL_OPTION,
-					JOptionPane.INFORMATION_MESSAGE, null,
-					options, options[1]
-				);
+				new HelpDialog().setVisible(true);
 			}
 		});
 
@@ -227,5 +207,8 @@ public class PaintFrame extends JFrame {
 		});
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
+		File f = new File(".dismiss");
+		if (!f.exists())
+			new HelpDialog().setVisible(true);
 	}
 }
