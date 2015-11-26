@@ -29,30 +29,28 @@ when the host is gone or you want to change the server.
 In the main frame, you can draw lines by
 easily clicking or dragging your mouse.
 The cursor is the preview of your current brush stroke.
+
+You can quickly change the color of your brush
+to one of the preset colors at bottom left
+by simply clicking it. You can also customize the color
+by clicking the 'Custom' button and pick your favorite color
+in the color chooser.
+
+You can also quickly change the size of the brush
+by clicking the preset sizes at bottom right.
+You may also directly input the size you want
+in the text field and click 'Set' or press Enter.
+The '+1'/'-1' buttons can be used to quickly adjust
+the size. You can press the buttons and hold your mouse
+to continuously increase or decrease the size.
 			
-			"Painting:<br>"
-			+ "You can quickly change the color of your brush"
-			+ "to one of the preset colors at bottom left"
-			+ "by simply clicking it. You can also customize the color"
-			+ "by clicking the 'Custom' button and pick your favorite color"
-			+ "in the color chooser.",
+##### Control:
+If you want to save your masterpiece, simply click
+'Control -> Save' in the menu bar to save the .pb
+painting board file to your computer.
+The host can load .pb files to the painting board
+and to all the clients via 'Control -> Load' in the menu bar.
+The host can also clear the whole board
+via 'Control -> Clear' in the menu bar.
 			
-			"Painting:<br>"
-			+ "You can also quickly change the size of the brush"
-			+ "by clicking the preset sizes at bottom right."
-			+ "You may also directly input the size you want"
-			+ "in the text field and click 'Set' or press Enter."
-			+ "The '+1'/'-1' buttons can be used to quickly adjust"
-			+ "the size. You can press the buttons and hold your mouse"
-			+ "to continuously increase or decrease the size.",
-			
-			"Control:<br>"
-			+ "If you want to save your masterpiece, simply click"
-			+ "'Control -> Save' in the menu bar to save the .pb"
-			+ "painting board file to your computer."
-			+ "The host can load .pb files to the painting board"
-			+ "and to all the clients via 'Control -> Load' in the menu bar."
-			+ "The host can also clear the whole board"
-			+ "via 'Control -> Clear' in the menu bar.",
-			
-			"That's all! Hope you enjoy using the CoPainter.
+##### That's all! Hope you enjoy using the CoPainter.
