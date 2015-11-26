@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
-import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -20,14 +19,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PaintFrame extends JFrame {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	public static PaintPanel paintPanel;
 	public static JMenuBar menuBar;
 	private int port;
 	private String ip;
+
 	PaintFrame(NetworkManager n,int p,String h) {
 		port=p;
 		ip=h;
@@ -172,6 +170,15 @@ public class PaintFrame extends JFrame {
 				} while (!done);
 			}
 		});
+		
+		help.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new HelpDialog().setVisible(true);
+			}
+		});
+
 		about.addActionListener(new ActionListener(){
 
 			@Override
@@ -181,20 +188,18 @@ public class PaintFrame extends JFrame {
 					IP="Local IP: "+String.valueOf(InetAddress.getLocalHost());
 				}catch(Exception ex){
 				}
-				String status;
 				if(n instanceof ServerManager)
-					status="Server";
+					JOptionPane.showMessageDialog(null,"Status: Server\n"+"Server IP: localhost\n"+IP+"\n"+"Port: "+Integer.toString(port)+"\nClient Number: "+((ServerManager)n).getClientNumber());
 				else
-					status="Client";
-				JOptionPane.showMessageDialog(null,"Status: "+status+"\n"+"Server IP: "+ip+"\n"+IP+"\n"+"Port: "+Integer.toString(port));
+					JOptionPane.showMessageDialog(null,"Status: Client\n"+"Server IP: "+ip+"\n"+IP+"\n"+"Port: "+Integer.toString(port));
 			}
-			
 		});
 		reconnect.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
+				((ClientManager)n).stop();
 				dispose();
 				new ConnectFrame().setVisible(true);
 			}
@@ -202,5 +207,8 @@ public class PaintFrame extends JFrame {
 		});
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
+		File f = new File(".dismiss");
+		if (!f.exists())
+			new HelpDialog().setVisible(true);
 	}
 }
