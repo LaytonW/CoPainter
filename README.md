@@ -8,6 +8,11 @@ CHEN, Zhihan | 303514****
 WANG, Zixu   | 3035140067
 
 ## Welcome to CoPainter!
+CoPainter is a online painting software which allows you to
+draw things with your friends over the Internet.
+
+It supports multi-client connection, full-color and size brushes, and file saving/loading.
+It runs on different platforms as it is written in pure Java.
 ##### Connection:
 If you start the CoPainter as a server/host,
 you can click 'Help -> About' in the menu bar
