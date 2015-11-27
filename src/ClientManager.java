@@ -12,7 +12,6 @@ public class ClientManager implements NetworkManager {
 	private Socket s;
 	private ObjectInputStream reader;
 	private ObjectOutputStream writer;
-	private volatile boolean running=true;
 	ClientManager(InetAddress host, int p) throws IOException {
 		s = new Socket();
 		s.connect(new InetSocketAddress(host, p), 5000);
@@ -23,7 +22,7 @@ public class ClientManager implements NetworkManager {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		while (running) {
+		while (true) {
 			try {
 				Object obj = reader.readObject();
 				if (obj.toString().equals("clear"))
@@ -35,9 +34,8 @@ public class ClientManager implements NetworkManager {
 						PaintPanel.buffer.add((Path) obj);
 				PaintFrame.paintPanel.repaint();
 			} catch (Exception e) {
-				if(running==true)
-					JOptionPane.showMessageDialog(null, "Host is gone!",
-						"Connection dropped", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Host is gone!",
+					"Connection dropped", JOptionPane.ERROR_MESSAGE);
 				try {
 					s.close();
 				} catch (IOException e1) {
@@ -45,7 +43,7 @@ public class ClientManager implements NetworkManager {
 							+ e.toString(),
 							"Network failed", JOptionPane.ERROR_MESSAGE);
 				}
-				return;
+				System.exit(0);
 			}
 		}
 	}
@@ -69,16 +67,6 @@ public class ClientManager implements NetworkManager {
 				}
 				return;
 			}
-		}
-	}
-	public void stop() {
-		running=false;
-		try {
-			s.close();
-		} catch (IOException e1) {
-			JOptionPane.showMessageDialog(null, "Client: Cannot close socket connection.\n"
-					+ e1.toString(),
-					"Network failed", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }
