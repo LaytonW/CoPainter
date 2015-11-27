@@ -15,10 +15,12 @@ public class Path implements Serializable {
 	}
 	
 	Path (Path p) {
-		color = p.color;
-		radius = p.radius;
-		for (Point point : p.points)
-			points.add((Point) point.clone());
+		if (p != null) {
+			color = p.color;
+			radius = p.radius;
+			for (Point point : p.points)
+				points.add((Point) point.clone());
+		}
 	}
 	
 	@Override
