@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JRootPane;
 import javax.swing.SpringLayout;
 
 @SuppressWarnings("serial")
@@ -16,58 +17,58 @@ public class HelpDialog extends JDialog {
 	private int index = 0;
 	final private static String[] helpMessages = {
 			"Welcome to CoPainter!<br>"
-			+ "In this quick guide, you will see how to"
-			+ "draw beautiful paintings with your friends"
-			+ "through the Internet, with brush srokes"
-			+ "supporting full-color and a wide range of sizes."
+			+ "In this quick guide, you will see how to "
+			+ "draw beautiful paintings with your friends "
+			+ "through the Internet, with brush srokes "
+			+ "supporting full-color and a wide range of sizes. "
 			+ "Click 'Next' to start.",
 			
 			"Connection:<br>"
-			+ "If you start the CoPainter as a server/host,"
-			+ "you can click 'Help -> About' in the menu bar"
-			+ "to get the connection details to tell your friends"
-			+ "to connect to you. You may also check the number"
+			+ "If you start the CoPainter as a server/host, "
+			+ "you can click 'Help -> About' in the menu bar "
+			+ "to get the connection details to tell your friends "
+			+ "to connect to you. You may also check the number "
 			+ "of connections there.",
 			
 			"Connection:<br>"
-			+ "To start the CoPainter as a client,"
-			+ "you need to type in the IP address as well as"
-			+ "the port of the server in the start-up connection prompt."
-			+ "Once connected, the main frame will appear."
-			+ "You can access 'Help -> About' in the menu bar"
-			+ "to check current connection status."
-			+ "You can reconnect to another host server"
-			+ "via 'Control -> Reconnection' in the menu bar"
+			+ "To start the CoPainter as a client, "
+			+ "you need to type in the IP address as well as "
+			+ "the port of the server in the start-up connection prompt. "
+			+ "Once connected, the main frame will appear. "
+			+ "You can access 'Help -> About' in the menu bar "
+			+ "to check current connection status. "
+			+ "You can reconnect to another host server "
+			+ "via 'Control -> Reconnection' in the menu bar "
 			+ "when the host is gone or you want to change the server.",
 			
 			"Painting:<br>"
-			+ "In the main frame, you can draw lines by"
-			+ "easily clicking or dragging your mouse."
-			+ "The cursor is the preview of your current brush stroke.",
+			+ "In the main frame, you can draw lines by "
+			+ "easily clicking or dragging your mouse. "
+			+ "The cursor is the preview of your current brush stroke. ",
 			
 			"Painting:<br>"
-			+ "You can quickly change the color of your brush"
-			+ "to one of the preset colors at bottom left"
-			+ "by simply clicking it. You can also customize the color"
-			+ "by clicking the 'Custom' button and pick your favorite color"
+			+ "You can quickly change the color of your brush "
+			+ "to one of the preset colors at bottom left "
+			+ "by simply clicking it. You can also customize the color "
+			+ "by clicking the 'Custom' button and pick your favorite color "
 			+ "in the color chooser.",
 			
 			"Painting:<br>"
-			+ "You can also quickly change the size of the brush"
-			+ "by clicking the preset sizes at bottom right."
-			+ "You may also directly input the size you want"
-			+ "in the text field and click 'Set' or press Enter."
-			+ "The '+1'/'-1' buttons can be used to quickly adjust"
-			+ "the size. You can press the buttons and hold your mouse"
+			+ "You can also quickly change the size of the brush "
+			+ "by clicking the preset sizes at bottom right. "
+			+ "You may also directly input the size you want "
+			+ "in the text field and click 'Set' or press Enter. "
+			+ "The '+1'/'-1' buttons can be used to quickly adjust "
+			+ "the size. You can press the buttons and hold your mouse "
 			+ "to continuously increase or decrease the size.",
 			
 			"Control:<br>"
-			+ "If you want to save your masterpiece, simply click"
-			+ "'Control -> Save' in the menu bar to save the .pb"
-			+ "painting board file to your computer."
-			+ "The host can load .pb files to the painting board"
-			+ "and to all the clients via 'Control -> Load' in the menu bar."
-			+ "The host can also clear the whole board"
+			+ "If you want to save your masterpiece, simply click "
+			+ "'Control -> Save' in the menu bar to save the .pb "
+			+ "painting board file to your computer. "
+			+ "The host can load .pb files to the painting board "
+			+ "and to all the clients via 'Control -> Load' in the menu bar. "
+			+ "The host can also clear the whole board "
 			+ "via 'Control -> Clear' in the menu bar.",
 			
 			"That's all! Hope you enjoy using the CoPainter.<br>"
@@ -82,6 +83,8 @@ public class HelpDialog extends JDialog {
 	HelpDialog() {
 		setTitle("Help");
 		setSize(400, 250);
+		getRootPane().setDefaultButton(next);
+		getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		
