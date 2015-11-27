@@ -82,7 +82,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		currentPath.points.add(e.getPoint());
+		currentPath.points.add(new Point(e.getPoint()));
 		mouseMoved(e);
 		repaint();
 	}
@@ -121,9 +121,11 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		if (currentPath == null)
-			currentPath = new Path(ControlPanel.current.getColor(),ControlPanel.current.getRadius());
-		currentPath.points.add(getMousePosition());
+		if (currentPath != null && !currentPath.points.isEmpty())
+			buffer.add(new Path(currentPath));
+		currentPath = new Path(ControlPanel.current.getColor(),ControlPanel.current.getRadius());
+		if (getMousePosition() != null)
+			currentPath.points.add(new Point(getMousePosition()));
 		repaint();
 	}
 
