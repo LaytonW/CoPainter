@@ -1,3 +1,4 @@
+import java.awt.Point;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -30,9 +31,14 @@ public class ClientManager implements NetworkManager {
 					PaintFrame.paintPanel.clear();
 				else if (obj instanceof CopyOnWriteArrayList<?>)
 					PaintPanel.buffer = (CopyOnWriteArrayList<Path>) obj;
-				else if (obj instanceof Path)
+				else if (obj instanceof Path) {
 					if (!PaintPanel.buffer.contains(obj))
 						PaintPanel.buffer.add((Path) obj);
+				}
+				else if (obj instanceof Point) {
+					if(!PaintPanel.buffer.get(PaintPanel.buffer.size()-1).points.contains(obj))
+						PaintPanel.buffer.get(PaintPanel.buffer.size()-1).points.add((Point)obj);
+				}
 				PaintFrame.paintPanel.repaint();
 			} catch (Exception e) {
 				if(running==true)

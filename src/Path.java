@@ -2,11 +2,12 @@ import java.awt.Color;
 import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Path implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	public ArrayList<Point> points=new ArrayList<Point>();
+	public CopyOnWriteArrayList<Point> points=new CopyOnWriteArrayList<Point>();
 	public Color color;
 	public int radius;
 	Path (Color c,int r) {
