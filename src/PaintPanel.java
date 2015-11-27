@@ -33,14 +33,18 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 		buffer = new CopyOnWriteArrayList<Path>();
 		if (networkManager instanceof ServerManager)
 			networkManager.write("clear");
+		this.repaint();
 	}
 	
 	public synchronized void loadToNetwork() {
 		networkManager.write(new CopyOnWriteArrayList<Path>(buffer));
 	}
 	
-	public synchronized void updateNetwork() {
-		networkManager.write(new Path(currentPath));
+	public synchronized void updateNetwork(MouseEvent e) {
+		if (e!=null)
+			networkManager.write(new Point(e.getPoint()));
+		else
+			networkManager.write(new Path(currentPath));
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -56,12 +60,14 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 					g2D.setStroke(new BasicStroke(path.radius*2,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
 				}
 				Point prevPoint=null;
-				for (Point p:path.points) {
-					if(prevPoint!=null) {
-						g.drawLine(prevPoint.x, prevPoint.y, p.x, p.y);
+//				try {
+					for (Point p:path.points) {
+						if(prevPoint!=null) {
+							g.drawLine(prevPoint.x, prevPoint.y, p.x, p.y);
+						}
+						prevPoint=p;
 					}
-					prevPoint=p;
-				}
+//				} catch (Exception e) {;}
 			}
 		}
 		if (currentPath != null) {
@@ -82,8 +88,9 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		currentPath.points.add(e.getPoint());
+		currentPath.points.add(new Point(e.getPoint()));
 		mouseMoved(e);
+		updateNetwork(e);// added
 		repaint();
 	}
 
@@ -121,15 +128,21 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
+		if (currentPath != null && !currentPath.points.isEmpty()) {
+			buffer.add(new Path(currentPath));
+			updateNetwork(null);
+		}
 		currentPath = new Path(ControlPanel.current.getColor(),ControlPanel.current.getRadius());
-		currentPath.points.add(getMousePosition());
+		if (getMousePosition() != null)
+			currentPath.points.add(new Point(getMousePosition()));
+		updateNetwork(null);
 		repaint();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		buffer.add(new Path(currentPath));
-		updateNetwork();
-		currentPath = null;
+		updateNetwork(null);
+		currentPath = new Path(ControlPanel.current.getColor(),ControlPanel.current.getRadius());
 	}
 }

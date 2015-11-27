@@ -4,7 +4,7 @@ HKU/COMP2396 Java Programming/assignment 6 collaboration repository
 ### Authors:
 Name | UID
 -------------|-----------
-CHEN, Zhihan | 303514****
+CHEN, Zhihan | 3035142261
 WANG, Zixu   | 3035140067
 
 ## Welcome to CoPainter!
