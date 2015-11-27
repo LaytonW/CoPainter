@@ -1,3 +1,4 @@
+import java.awt.Point;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -77,6 +78,9 @@ public class ServerManager implements NetworkManager {
 					Object obj = reader.readObject();
 					if (obj instanceof Path)
 						PaintPanel.buffer.add((Path) obj);
+					else if (obj instanceof Point) {
+						PaintPanel.buffer.get(PaintPanel.buffer.size()-1).points.add((Point)obj);
+					}
 					PaintFrame.paintPanel.repaint();
 					write(obj);
 				}
