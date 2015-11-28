@@ -214,6 +214,9 @@ public class ControlPanel extends JPanel{
 					int r = Integer.parseInt(radiusText.getText());
 					if (r > 0 && r < 350) {
 						current.setRadius(r);
+						if(PaintFrame.paintPanel.getMousePosition()!=null) {
+							current.setLocation(PaintFrame.paintPanel.getMousePosition().x-current.getRadius(),PaintFrame.paintPanel.getMousePosition().y-current.getRadius());
+						}
 						current.repaint();
 						PaintFrame.paintPanel.repaint();
 						repaint();
@@ -224,6 +227,7 @@ public class ControlPanel extends JPanel{
 					JOptionPane.showMessageDialog(null, "Invalid Input");
 				} finally {
 					radiusText.setText(String.valueOf(current.getRadius()));
+					PaintFrame.paintPanel.repaint();
 				}
 			}
 		}

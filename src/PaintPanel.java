@@ -19,7 +19,6 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	public volatile static CopyOnWriteArrayList<Path> buffer;
 	private Path currentPath;
 	private NetworkManager networkManager;
-	
 	PaintPanel (NetworkManager n) {
 		networkManager = n;
 		new Thread(networkManager).start();
@@ -117,6 +116,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	public void mouseExited(MouseEvent arg0) {
 		remove(ControlPanel.current);
 		repaint();
+		
 	}
 
 	@Override
