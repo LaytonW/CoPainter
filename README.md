@@ -26,9 +26,6 @@ the port of the server in the start-up connection prompt.
 Once connected, the main frame will appear.
 You can access 'Help -> About' in the menu bar
 to check current connection status.
-You can reconnect to another host server
-via 'Control -> Reconnection' in the menu bar
-when the host is gone or you want to change the server.
 			
 ##### Painting:
 In the main frame, you can draw lines by
