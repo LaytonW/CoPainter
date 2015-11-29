@@ -31,7 +31,7 @@ public class PaintFrame extends JFrame {
 		ip=h;
 		if(ip==null)
 			ip="localhost";
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(0);
 		this.setSize(800, 700);
 		this.setTitle("Collaborative Painter");
 		this.setResizable(false);
