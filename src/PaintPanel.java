@@ -20,6 +20,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	private Path currentPath;
 	private NetworkManager networkManager;
 	PaintPanel (NetworkManager n) {
+		setLayout(null);
 		networkManager = n;
 		new Thread(networkManager).start();
 		buffer=new CopyOnWriteArrayList<Path>();

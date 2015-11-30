@@ -214,12 +214,8 @@ public class ControlPanel extends JPanel{
 					int r = Integer.parseInt(radiusText.getText());
 					if (r > 0 && r < 350) {
 						current.setRadius(r);
-						if(PaintFrame.paintPanel.getMousePosition()!=null) {
+						if(PaintFrame.paintPanel.getMousePosition() != null)
 							current.setLocation(PaintFrame.paintPanel.getMousePosition().x-current.getRadius(),PaintFrame.paintPanel.getMousePosition().y-current.getRadius());
-						}
-						current.repaint();
-						PaintFrame.paintPanel.repaint();
-						repaint();
 					} else
 						JOptionPane.showMessageDialog(null,
 								"Invalid Input. radius must in the range of 1-349");

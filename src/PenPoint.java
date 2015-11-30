@@ -1,19 +1,21 @@
 import java.awt.Color;
 import java.awt.Graphics;
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
-public class PenPoint extends JPanel {
+public class PenPoint extends JComponent {
 
 	private static final long serialVersionUID = 1L;
 	private int radius;
 	private Color color;
+
+	PenPoint() {
+		setOpaque(true);
+	}
+
 	public void paintComponent(Graphics g) {
-		g.setColor(Color.WHITE);
-		g.fillOval(0, 0, radius*2, radius*2);
-		setSize(radius*2,radius*2);
+		setSize(radius*2 + 1,radius*2 + 1);
 		g.setColor(color);
 		g.fillOval(0, 0, radius*2, radius*2);
-		
 	}
 
 	public void setPointColor(int red, int green, int blue) {
@@ -24,6 +26,7 @@ public class PenPoint extends JPanel {
 	}
 	public void setRadius(int r) {
 		radius = r;
+		setSize(radius * 2 + 1, radius * 2 + 1);
 	}
 	public Color getColor() {
 		return color;
