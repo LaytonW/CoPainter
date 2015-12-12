@@ -14,34 +14,52 @@ public class ClientManager implements NetworkManager {
 	private ObjectInputStream reader;
 	private ObjectOutputStream writer;
 	private volatile boolean running=true;
+	private int ID;
 	ClientManager(InetAddress host, int p) throws IOException {
 		s = new Socket();
 		s.connect(new InetSocketAddress(host, p), 5000);
 		reader = new ObjectInputStream(s.getInputStream());
 		writer = new ObjectOutputStream(s.getOutputStream());
 	}
-
+	public void setID(int i) {
+		ID=i;
+	}
+	public int getID() {
+		return ID;
+	}
 	@SuppressWarnings("unchecked")
 	@Override
+
+	
 	public void run() {
 		while (running) {
 			try {
 				Object obj = reader.readObject();
-				if (obj.toString().equals("clear"))
-					PaintFrame.paintPanel.clear();
-				else if (obj instanceof CopyOnWriteArrayList<?>)
+				if(obj instanceof String) {
+					if (obj.toString().equals("clear"))
+						PaintFrame.paintPanel.clear();
+					else
+						this.setID(Integer.parseInt((String)obj));
+				}
+				if (obj instanceof CopyOnWriteArrayList<?>)
 					PaintPanel.buffer = (CopyOnWriteArrayList<Path>) obj;
 				else if (obj instanceof Path) {
-					if (!PaintPanel.buffer.contains(obj))
-						PaintPanel.buffer.add((Path) obj);
+					if(((Path)obj).instance==false) {
+						if (!PaintPanel.buffer.contains(obj))
+							PaintPanel.buffer.add((Path) obj);
+						PaintPanel.instant=new CopyOnWriteArrayList<Path>();
+					}
+					else {
+						PaintPanel.instant.add(((Path)obj).author,(Path)obj);
+					}
 				}
-				else if (obj instanceof Point) {
-					if(!PaintPanel.buffer.get(PaintPanel.buffer.size()-1).points.contains(obj))
-						PaintPanel.buffer.get(PaintPanel.buffer.size()-1).points.add((Point)obj);
+				else if (obj instanceof MyPoint) {
+					PaintPanel.instant.get(((MyPoint)obj).getAuthor()).points.add(((MyPoint)obj).getPoint());
 				}
 				PaintFrame.paintPanel.repaint();
 			} catch (Exception e) {
 				if(running==true)
+					e.printStackTrace();
 					JOptionPane.showMessageDialog(null, "Host is gone!",
 						"Connection dropped", JOptionPane.ERROR_MESSAGE);
 				try {
@@ -60,6 +78,7 @@ public class ClientManager implements NetworkManager {
 	public void write(Object obj) {
 		if (!s.isClosed()) {
 			try {
+				System.out.println(obj);
 				writer.writeObject(obj);
 				writer.flush();
 			} catch (Exception e) {

@@ -5,6 +5,8 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import javax.swing.JOptionPane;
 
 public class ServerManager implements NetworkManager {
@@ -24,6 +26,7 @@ public class ServerManager implements NetworkManager {
 				Socket s = ss.accept();
 				ObjectOutputStream writer = new ObjectOutputStream(s.getOutputStream());
 				writers.add(writer);
+				write(writer,Integer.toString(getClientNumber()+1));
 				write(writer, PaintPanel.buffer);
 				new Thread(new ClientHandler(s, writer)).start();
 			} catch (Exception e) {
@@ -76,10 +79,16 @@ public class ServerManager implements NetworkManager {
 			try {
 				while (true) {
 					Object obj = reader.readObject();
-					if (obj instanceof Path)
-						PaintPanel.buffer.add((Path) obj);
-					else if (obj instanceof Point) {
-						PaintPanel.buffer.get(PaintPanel.buffer.size()-1).points.add((Point)obj);
+					if (obj instanceof Path) {
+						if(((Path)obj).instance==false) {
+							PaintPanel.buffer.add((Path) obj);
+							PaintPanel.instant=new CopyOnWriteArrayList<Path>();
+						}
+						PaintPanel.instant.set(((Path)obj).author, (Path)obj);
+					}
+					else if (obj instanceof MyPoint) {
+						PaintPanel.instant.get(((MyPoint)obj).getAuthor()).points.add(((MyPoint)obj).getPoint());
+
 					}
 					PaintFrame.paintPanel.repaint();
 					write(obj);

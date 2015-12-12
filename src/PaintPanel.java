@@ -18,8 +18,9 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	private static final long serialVersionUID = 1L;
 	public volatile static CopyOnWriteArrayList<Path> buffer;
 	private Path currentPath;
-	private NetworkManager networkManager;
-	
+	public NetworkManager networkManager;
+	public int ID;
+	public volatile static CopyOnWriteArrayList<Path> instant;
 	PaintPanel (NetworkManager n) {
 		networkManager = n;
 		new Thread(networkManager).start();
@@ -27,6 +28,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 		addMouseMotionListener(this);
 		addMouseListener(this);
 		setFocusable(true);
+		instant=new CopyOnWriteArrayList<Path>();
 	}
 	
 	public void clear() {
@@ -40,17 +42,51 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 		networkManager.write(new CopyOnWriteArrayList<Path>(buffer));
 	}
 	
-	public synchronized void updateNetwork(MouseEvent e) {
+/*	public synchronized void updateNetwork(MouseEvent e) {
 		if (e!=null)
-			networkManager.write(e.getPoint());
+			networkManager.write(new NetworkPackage(e.getPoint(),1));
 		else
 			networkManager.write(new Path(currentPath));
+	}*/
+	public synchronized void PressUpdate() {
+		System.out.println(currentPath);
+		networkManager.write(new Path(currentPath));
 	}
+	public synchronized void ReleaseUpdate() {
 	
+		networkManager.write(new Path(currentPath));
+	}
+	public synchronized void DragUpdate(MouseEvent e) {
+		if(networkManager instanceof ServerManager)
+			networkManager.write(new MyPoint(0,e.getPoint()));
+		else {
+			networkManager.write(new MyPoint(((ClientManager)networkManager).getID(),e.getPoint()));
+		}
+	}
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		for (Path path : buffer) {
+			g.setColor(path.color);
+			if (path.points.size()==1)
+				g.fillOval(path.points.get(0).x-path.radius,path.points.get(0).y-path.radius,path.radius*2,path.radius*2);
+			else {
+				if(g instanceof Graphics2D) {
+					Graphics2D g2D=(Graphics2D) g;
+					g2D.setStroke(new BasicStroke(path.radius*2,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
+				}
+				Point prevPoint=null;
+//				try {
+					for (Point p:path.points) {
+						if(prevPoint!=null) {
+							g.drawLine(prevPoint.x, prevPoint.y, p.x, p.y);
+						}
+						prevPoint=p;
+					}
+//				} catch (Exception e) {;}
+			}
+		}
+		for (Path path : instant) {
 			g.setColor(path.color);
 			if (path.points.size()==1)
 				g.fillOval(path.points.get(0).x-path.radius,path.points.get(0).y-path.radius,path.radius*2,path.radius*2);
@@ -90,8 +126,8 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	public void mouseDragged(MouseEvent e) { //changed
 		currentPath.points.add(e.getPoint());
 //		buffer.get(buffer.size()-1).points.add(e.getPoint());
-		mouseMoved(e);
-		updateNetwork(e);// added
+//		mouseMoved(e);
+//		DragUpdate(e);// added
 		repaint();
 	}
 
@@ -131,14 +167,17 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	public void mousePressed(MouseEvent arg0) {
 		currentPath = new Path(ControlPanel.current.getColor(),ControlPanel.current.getRadius());
 		currentPath.points.add(getMousePosition());
-		updateNetwork(null);
+		currentPath.instance=true;
+		System.out.println(currentPath);
+		PressUpdate();
+		currentPath.instance=false;
 		repaint();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		buffer.add(new Path(currentPath));
-//		updateNetwork(null); //changed
+//		ReleaseUpdate();
 		currentPath = null;
 	}
 }

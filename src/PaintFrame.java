@@ -191,7 +191,7 @@ public class PaintFrame extends JFrame {
 				if(n instanceof ServerManager)
 					JOptionPane.showMessageDialog(null,"Status: Server\n"+"Server IP: localhost\n"+IP+"\n"+"Port: "+Integer.toString(port)+"\nClient Number: "+((ServerManager)n).getClientNumber());
 				else
-					JOptionPane.showMessageDialog(null,"Status: Client\n"+"Server IP: "+ip+"\n"+IP+"\n"+"Port: "+Integer.toString(port));
+					JOptionPane.showMessageDialog(null,"Status: Client\n"+"Server IP: "+ip+"\n"+IP+"\n"+"Port: "+Integer.toString(port)+"\n"+"Client ID: "+Integer.toString(((ClientManager)paintPanel.networkManager).getID()));
 			}
 		});
 		reconnect.addActionListener(new ActionListener(){

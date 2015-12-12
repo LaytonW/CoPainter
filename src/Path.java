@@ -10,9 +10,12 @@ public class Path implements Serializable {
 	public CopyOnWriteArrayList<Point> points=new CopyOnWriteArrayList<Point>();
 	public Color color;
 	public int radius;
+	public boolean instance;
+	public int author;
 	Path (Color c,int r) {
 		color=c;
 		radius=r;
+		instance=false;
 	}
 	
 	Path (Path p) {
@@ -20,6 +23,7 @@ public class Path implements Serializable {
 		radius = p.radius;
 		for (Point point : p.points)
 			points.add((Point) point.clone());
+		instance=p.instance;
 	}
 	
 	@Override
@@ -30,6 +34,6 @@ public class Path implements Serializable {
 			for (int i = 0; i < points.size(); ++i)
 				if (!points.get(i).equals(p.points.get(i)))
 					samePoints = false;
-		return color.equals(p.color) && radius == p.radius && samePoints;
+		return color.equals(p.color) && radius == p.radius && samePoints&&instance==p.instance;
 	}
 }
