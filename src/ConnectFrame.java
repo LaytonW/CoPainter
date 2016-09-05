@@ -10,9 +10,24 @@ import javax.swing.*;
 public class ConnectFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	public String host;
-	public String port;
+
+    private JTextField hostText;
+    private JTextField portText;
+    private JButton serverButton;
+    private JButton clientButton;
+
 	ConnectFrame() {
+		this.initializeAppearance();
+        this.initializeFunction();
+
+	}
+
+    private void initializeFunction() {
+        clientButton.addActionListener(new ClientListener(this));
+        serverButton.addActionListener(new ServerListener(this));
+    }
+
+	private void initializeAppearance() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(340, 155);
 		this.setTitle("Connect to CoPainter");
@@ -22,10 +37,10 @@ public class ConnectFrame extends JFrame {
 		this.setResizable(false);
 		JLabel hostLabel = new JLabel("Host:");
 		JLabel portLabel = new JLabel("Port: ");
-		JTextField hostText = new JTextField("localhost");
-		JTextField portText = new JTextField("2333");
-		JButton serverButton = new JButton("Start as a host");
-		JButton clientButton = new JButton("Connect to a host");
+		hostText = new JTextField("localhost");
+		portText = new JTextField("2333");
+		serverButton = new JButton("Start as a host");
+		clientButton = new JButton("Connect to a host");
 		this.getContentPane().add(hostLabel);
 		this.getContentPane().add(hostText);
 		this.getContentPane().add(portLabel);
@@ -54,52 +69,13 @@ public class ConnectFrame extends JFrame {
 		connectLayout.putConstraint(SpringLayout.WEST, clientButton, 5, SpringLayout.EAST, serverButton);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
-		class ClientListener implements ActionListener {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				ClientManager clientManager;
-				try {
-					host = hostText.getText();
-					port = portText.getText();
-					clientManager = new ClientManager(InetAddress.getByName(host), Integer.parseInt(port));
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(rootPane, "Unable to connect to host!",
-							"Fail to start", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				setVisible(false);
-				dispose();
-				new PaintFrame(clientManager,Integer.parseInt(port),host);
-			}
-		}
-		class ServerListener implements ActionListener {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				int port;
-				try {
-					 port = Integer.parseInt(portText.getText());
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(rootPane, "Invalid input!",
-							"Invalid input", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				ServerManager serverManager;
-				try {
-					serverManager = new ServerManager(port);
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(rootPane, "Unable to listen to port "
-							+ String.valueOf(port) +"!",
-							"Fail to start", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				setVisible(false);
-				dispose();
-				new PaintFrame(serverManager,port,host);
-			}
-		}
-		clientButton.addActionListener(new ClientListener());
-		serverButton.addActionListener(new ServerListener());
 	}
+
+	public JTextField getHostText() {
+	    return hostText;
+    }
+
+    public JTextField getPortText() {
+        return portText;
+    }
 }
