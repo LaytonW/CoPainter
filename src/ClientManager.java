@@ -7,12 +7,16 @@ import java.net.Socket;
 import javax.swing.JOptionPane;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class ClientManager implements NetworkManager {
+public class ClientManager extends NetworkManager {
 
 	private Socket s;
 	private ObjectInputStream reader;
 	private ObjectOutputStream writer;
+	private String host;
+
 	ClientManager(InetAddress host, int p) throws IOException {
+		super(p);
+		this.host=host.toString();
 		s = new Socket();
 		s.connect(new InetSocketAddress(host, p), 5000);
 		reader = new ObjectInputStream(s.getInputStream());
@@ -26,13 +30,13 @@ public class ClientManager implements NetworkManager {
 			try {
 				Object obj = reader.readObject();
 				if (obj.toString().equals("clear"))
-					PaintFrame.paintPanel.clear();
+					this.frame.clearPanel();
 				else if (obj instanceof CopyOnWriteArrayList<?>)
 					PaintPanel.buffer = (CopyOnWriteArrayList<Path>) obj;
 				else if (obj instanceof Path)
 					if (!PaintPanel.buffer.contains(obj))
 						PaintPanel.buffer.add((Path) obj);
-				PaintFrame.paintPanel.repaint();
+				this.frame.repaintPanel();
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Host is gone!",
 					"Connection dropped", JOptionPane.ERROR_MESSAGE);
@@ -68,5 +72,10 @@ public class ClientManager implements NetworkManager {
 				return;
 			}
 		}
+	}
+
+
+	public String getHost() {
+		return host;
 	}
 }

@@ -5,7 +5,7 @@ import java.awt.event.*;
 public class ColorChooserFrame extends JFrame{
 
 	private static final long serialVersionUID = 1L;
-	ColorChooserFrame() {
+	ColorChooserFrame(ControlPanel controlPanel) {
 		this.setSize(650,440);
 		this.setLayout(null);
 		this.setLocationRelativeTo(null);
@@ -19,7 +19,7 @@ public class ColorChooserFrame extends JFrame{
 		confirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ControlPanel.current.setPointColor(colorChooser.getColor());
+				controlPanel.setColor(colorChooser.getColor());
 				setVisible(false);
 				dispose();
 			}

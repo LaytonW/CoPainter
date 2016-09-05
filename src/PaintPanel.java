@@ -18,10 +18,13 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	private static final long serialVersionUID = 1L;
 	public volatile static CopyOnWriteArrayList<Path> buffer;
 	private Path currentPath;
+	private PaintFrame frame;
 	private NetworkManager networkManager;
-	PaintPanel (NetworkManager n) {
+	private ControlPanel controlPanel;
+	PaintPanel (ControlPanel controlPanel, NetworkManager networkManager) {
 		setLayout(null);
-		networkManager = n;
+		this.networkManager=networkManager;
+		this.controlPanel=controlPanel;
 		new Thread(networkManager).start();
 		buffer=new CopyOnWriteArrayList<Path>();
 		addMouseMotionListener(this);
@@ -90,7 +93,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		try {
-			ControlPanel.current.setLocation(e.getX()-ControlPanel.current.getRadius(),e.getY()-ControlPanel.current.getRadius());
+			controlPanel.setPenLocation(e.getX()-controlPanel.getRadius(),e.getY()-controlPanel.getRadius());
 		} catch (Exception ex) {
 		}
 		repaint();
@@ -104,10 +107,10 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
 		this.setCursor(blankCursor);
-		ControlPanel.current.setSize(ControlPanel.current.getRadius()*2, ControlPanel.current.getRadius()*2);
-		this.add(ControlPanel.current);
+		controlPanel.setSize(controlPanel.getRadius()*2, controlPanel.getRadius()*2);
+		this.add(controlPanel.getPen());
 		try {
-			ControlPanel.current.setLocation(arg0.getX()-ControlPanel.current.getRadius(),arg0.getY()-ControlPanel.current.getRadius());
+			controlPanel.setPenLocation(arg0.getX()-controlPanel.getRadius(),arg0.getY()-controlPanel.getRadius());
 		} catch (Exception ex) {
 		}
 		repaint();
@@ -115,7 +118,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		remove(ControlPanel.current);
+		remove(controlPanel.getPen());
 		repaint();
 		
 	}
@@ -126,7 +129,7 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 			buffer.add(new Path(currentPath));
 			updateNetwork();
 		}
-		currentPath = new Path(ControlPanel.current.getColor(),ControlPanel.current.getRadius());
+		currentPath = new Path(controlPanel.getColor(),controlPanel.getRadius());
 		if (getMousePosition() != null)
 			currentPath.points.add(new Point(getMousePosition()));
 		repaint();
@@ -136,6 +139,6 @@ public class PaintPanel extends JPanel implements MouseMotionListener, MouseList
 	public void mouseReleased(MouseEvent arg0) {
 		buffer.add(new Path(currentPath));
 		updateNetwork();
-		currentPath = new Path(ControlPanel.current.getColor(),ControlPanel.current.getRadius());
+		currentPath = new Path(controlPanel.getColor(),controlPanel.getRadius());
 	}
 }

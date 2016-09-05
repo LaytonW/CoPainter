@@ -6,12 +6,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
-public class ServerManager implements NetworkManager {
+public class ServerManager extends NetworkManager {
 
 	private ServerSocket ss;
 	private ArrayList<ObjectOutputStream> writers;
 	private int clientNumber=0;
 	ServerManager(int p) throws IOException {
+		super(p);
 		ss = new ServerSocket(p);
 		writers = new ArrayList<ObjectOutputStream>();
 	}
@@ -24,7 +25,7 @@ public class ServerManager implements NetworkManager {
 				ObjectOutputStream writer = new ObjectOutputStream(s.getOutputStream());
 				writers.add(writer);
 				write(writer, PaintPanel.buffer);
-				new Thread(new ClientHandler(s, writer)).start();
+				new Thread(new ClientHandler(this,s, writer)).start();
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Server: Connection failed!\n"
 						+ e.toString(),
@@ -56,8 +57,10 @@ public class ServerManager implements NetworkManager {
 		private Socket s;
 		private ObjectInputStream reader;
 		private ObjectOutputStream writer;
-		
-		public ClientHandler(Socket s, ObjectOutputStream w) {
+		private ServerManager serverManager;
+
+		public ClientHandler(ServerManager serverManager,Socket s, ObjectOutputStream w) {
+			this.serverManager=serverManager;
 			this.s = s;
 			++clientNumber;
 			try {
@@ -77,7 +80,7 @@ public class ServerManager implements NetworkManager {
 					Object obj = reader.readObject();
 					if (obj instanceof Path)
 						PaintPanel.buffer.add((Path) obj);
-					PaintFrame.paintPanel.repaint();
+					this.serverManager.frame.repaintPanel();
 					write(obj);
 				}
 			} catch (Exception e) {
